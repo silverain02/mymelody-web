@@ -1,3 +1,8 @@
+import KakaoMap from '@/components/Map/KakaoMap';
 export default function Page() {
-  return <h1>Hello, Next.js!</h1>;
+  return (
+    <>
+      <KakaoMap />
+    </>
+  );
 }

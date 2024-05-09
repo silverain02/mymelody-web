@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import './globals.css';
 import type { Viewport } from 'next';
+import Script from 'next/script';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -17,6 +18,12 @@ export const metadata: Metadata = {
   ],
 };
 
+declare global {
+  interface Window {
+    Kakao: any;
+  }
+}
+
 export const viewport: Viewport = {
   themeColor: '#f36ee8',
 };
@@ -29,6 +36,10 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>{children}</body>
+      <Script
+        src="https://developers.kakao.com/sdk/js/kakao.js"
+        strategy="afterInteractive"
+      />
     </html>
   );
 }
