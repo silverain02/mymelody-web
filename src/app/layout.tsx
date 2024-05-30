@@ -4,6 +4,7 @@ import './globals.css';
 import type { Viewport } from 'next';
 import Script from 'next/script';
 import { ColorModeScript } from '@chakra-ui/react';
+import TanstackProvider from '../../providers/TanstackProvider';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -37,8 +38,10 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <ColorModeScript />
-        {children}
+        <TanstackProvider>
+          <ColorModeScript />
+          <div>{children}</div>
+        </TanstackProvider>
       </body>
       <Script
         src="https://developers.kakao.com/sdk/js/kakao.js"

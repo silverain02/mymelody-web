@@ -1,7 +1,7 @@
 import axios, { AxiosResponse } from 'axios';
 
 // accessToken 요청
-export const getToken = async () => {
+export const getSpotifyToken = async () => {
   try {
     // 요청 본문을 정의합니다.
     const requestBody = new URLSearchParams();
@@ -28,7 +28,7 @@ export const getToken = async () => {
 
     // 응답에서 액세스 토큰을 추출합니다.
     const accessToken = response.data.access_token;
-    console.log('액세스 토큰 from music Info:', accessToken);
+    console.log('액세스 토큰 저장:', accessToken);
 
     //accessToken ls 에 저장
     localStorage.setItem('spotifyAccessToken', accessToken);
@@ -38,19 +38,4 @@ export const getToken = async () => {
     console.error('에러:', error);
     throw error;
   }
-};
-
-//track 찾기 api
-export const searchTrack = async (query: string) => {
-  const accessToken = localStorage.getItem('spotifyAccessToken');
-  const response = await fetch(
-    `https://api.spotify.com/v1/search?type=track&q=${query}`,
-    {
-      headers: {
-        Authorization: 'Bearer ' + accessToken,
-      },
-    }
-  );
-  const data = await response.json();
-  return data.tracks.items;
 };
