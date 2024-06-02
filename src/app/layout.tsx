@@ -2,11 +2,10 @@ import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import './globals.css';
 import type { Viewport } from 'next';
-import Script from 'next/script';
 import { ColorModeScript } from '@chakra-ui/react';
 import TanstackProvider from '../../providers/TanstackProvider';
+import Script from 'next/script';
 import { NextScript } from 'next/document';
-
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
@@ -43,11 +42,12 @@ export default function RootLayout({
           <ColorModeScript />
           <div>{children}</div>
         </TanstackProvider>
+        {/* <NextScript />
+        <Script
+          src="https://developers.kakao.com/sdk/js/kakao.js"
+          strategy="afterInteractive"
+        /> */}
       </body>
-      <Script
-        src="https://developers.kakao.com/sdk/js/kakao.js"
-        strategy="afterInteractive"
-      />
     </html>
   );
 }

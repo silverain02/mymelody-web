@@ -1,13 +1,49 @@
 'use client';
-import Script from 'next/script';
 import {
   Map,
   MapMarker,
   CustomOverlayMap,
   useKakaoLoader,
+  useMap,
 } from 'react-kakao-maps-sdk';
 import useLocationInfo from '@/hooks/useLocationInfo';
 import { useEffect, useRef, useState } from 'react';
+import Script from 'next/script';
+import { NextScript } from 'next/document';
+import TrackModule from '../TrackModule';
+import { getCleanTrackInfo } from '@/apis/services/getCleanTrackInfo';
+import { useGetTrackInfo } from '@/apis/api/get/useGetTrackInfo';
+import { getSpotifyToken } from '@/apis/utils/getSpotifyToken';
+
+const KAKAO_SDK_URL = `//dapi.kakao.com/v2/maps/sdk.js?appkey=${process.env.NEXT_PUBLIC_KAKAO_APP_KEY_JS}&autoload=false&libraries=services,clusterer`;
+
+//Mock Data
+const pinList = [
+  {
+    isrc: 'USA2P2254487',
+    latlng: { lat: 37.55543673765699, lng: 126.90673385881081 },
+  },
+  {
+    isrc: 'USA2P2230223',
+    latlng: { lat: 37.55428413833823, lng: 126.90759539909989 },
+  },
+  {
+    isrc: 'USA2P2230222',
+    latlng: { lat: 37.55370364774336, lng: 126.9027976789222 },
+  },
+  {
+    isrc: 'USA2P2230221',
+    latlng: { lat: 37.55720029242072, lng: 126.9037438152235 },
+  },
+];
+
+interface EventMarkerContainerProps {
+  position: {
+    lat: number;
+    lng: number;
+  };
+  isrc: string;
+}
 
 const KakaoMap = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -17,7 +53,7 @@ const KakaoMap = () => {
     console.log(locationInfo);
   }, [locationInfo]);
 
-  // 지도가 처음 렌더링되면 중심좌표를 현위치로 설정하고 위치 변화 감지
+  // mount 시
   useEffect(() => {
     navigator.geolocation.getCurrentPosition((pos) => {
       setLocationInfo({
@@ -35,14 +71,42 @@ const KakaoMap = () => {
   }, []);
 
   //카카오맵 불러오기
-
   const [loading, error] = useKakaoLoader({
     appkey: process.env.NEXT_PUBLIC_KAKAO_APP_KEY_JS || '',
   });
 
+  //마커 이벤트
+  const EventMarkerContainer = ({
+    position,
+    isrc,
+  }: EventMarkerContainerProps) => {
+    const map = useMap();
+    const [isVisible, setIsVisible] = useState(false);
+
+    return (
+      <MapMarker
+        position={position} // 마커를 표시할 위치
+        //마커 이미지
+        image={{
+          src: 'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png', // 마커이미지의 주소입니다
+          size: {
+            width: 24,
+            height: 35,
+          },
+        }}
+        onClick={(marker) => map.panTo(marker.getPosition())}
+        onMouseOver={() => setIsVisible(true)}
+        onMouseOut={() => setIsVisible(false)}
+      >
+        {isVisible && <TrackModule isrc={isrc} />}
+      </MapMarker>
+    );
+  };
+
   return (
     <>
-      <h1>흠마마~</h1>
+      {/* <NextScript />
+      <Script src={KAKAO_SDK_URL} strategy="beforeInteractive" /> */}
       <Map
         center={locationInfo} //지도 중심의 좌표
         style={{ width: '500px', height: '400px' }} //지도크기
@@ -69,13 +133,38 @@ const KakaoMap = () => {
             setIsOpen(!isOpen);
           }}
         />
+        {/* 다중 마커 */}
+        {/* {pinList.map((position, index) => (
+          <MapMarker
+            key={`${position.isrc}-${position.latlng}`}
+            position={position.latlng} // 마커를 표시할 위치
+            image={{
+              src: 'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png', // 마커이미지의 주소입니다
+              size: {
+                width: 24,
+                height: 35,
+              }, // 마커이미지의 크기입니다
+            }}
+            title={position.isrc} // 마커의 타이틀, 마커에 마우스를 올리면 타이틀이 표시됩니다
+          />
+        ))} */}
         {/* 커스텀 오버레이 */}
         {/* {isOpen && (
-          <CustomOverlayMap position={locationInfo}>
+          <CustomOverlayMap position={{ lat: 37.5577222, lng: 126.9010131 }}>
             <div className="w-16 h-16 bg-red-500">테스트요</div>
           </CustomOverlayMap>
         )} */}
+
+        {/* 다중마커 이벤트 */}
+        {pinList.map((value) => (
+          <EventMarkerContainer
+            key={`EventMarkerContainer-${value.latlng.lat}-${value.latlng.lng}`}
+            position={value.latlng}
+            isrc={value.isrc}
+          />
+        ))}
       </Map>
+      {isOpen && <div className="w-16 h-16 bg-red-500">냐냥?</div>}
     </>
   );
 };

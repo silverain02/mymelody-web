@@ -1,5 +1,9 @@
 'use client';
 
+import { useGetTrackInfo } from '@/apis/api/get/useGetTrackInfo';
+import { getCleanTrackInfo } from '@/apis/services/getCleanTrackInfo';
+import { useEffect, useState } from 'react';
+
 interface CleanTrackInfo {
   name: string;
   artist: string;
@@ -9,7 +13,36 @@ interface CleanTrackInfo {
   albumName: string;
 }
 
-const TrackModule = ({ track }: { track: CleanTrackInfo }) => {
+//isrc를 받아 노래 정보를 띄우는 모듈
+
+const TrackModule = ({ isrc }: { isrc: string }) => {
+  const [track, setTrack] = useState({
+    name: '',
+    artist: '',
+    isrc: '',
+    previewUrl: '',
+    imageUrl: '',
+    albumName: '',
+  });
+
+  //노래정보 받아오기
+  const { trackDetail, isLoading, error } = useGetTrackInfo(isrc);
+
+  useEffect(() => {
+    if (!isLoading && trackDetail) {
+      const cleanTrackInfo = getCleanTrackInfo(trackDetail);
+      setTrack(cleanTrackInfo);
+    }
+  }, [isLoading, trackDetail]);
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+
+  if (error) {
+    return <div>Error loading track info.</div>;
+  }
+
   return (
     <div className="flex items-center p-2 border border-gray-300 rounded-md max-w-xs">
       <img
