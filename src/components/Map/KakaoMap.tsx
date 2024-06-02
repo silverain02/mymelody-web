@@ -14,28 +14,31 @@ import TrackModule from '../TrackModule';
 import { getCleanTrackInfo } from '@/apis/services/getCleanTrackInfo';
 import { useGetTrackInfo } from '@/apis/api/get/useGetTrackInfo';
 import { getSpotifyToken } from '@/apis/utils/getSpotifyToken';
+import { getToken } from '@chakra-ui/react';
+import ISRCForm from '../ISRCForm';
+import usePinStore from '@/utils/store';
 
 const KAKAO_SDK_URL = `//dapi.kakao.com/v2/maps/sdk.js?appkey=${process.env.NEXT_PUBLIC_KAKAO_APP_KEY_JS}&autoload=false&libraries=services,clusterer`;
 
 //Mock Data
-const pinList = [
-  {
-    isrc: 'USA2P2254487',
-    latlng: { lat: 37.55543673765699, lng: 126.90673385881081 },
-  },
-  {
-    isrc: 'USA2P2230223',
-    latlng: { lat: 37.55428413833823, lng: 126.90759539909989 },
-  },
-  {
-    isrc: 'USA2P2230222',
-    latlng: { lat: 37.55370364774336, lng: 126.9027976789222 },
-  },
-  {
-    isrc: 'USA2P2230221',
-    latlng: { lat: 37.55720029242072, lng: 126.9037438152235 },
-  },
-];
+// const pinList = [
+//   {
+//     isrc: 'US5TA2300179',
+//     latlng: { lat: 37.55543673765699, lng: 126.90673385881081 },
+//   },
+//   {
+//     isrc: 'USA2P2230223',
+//     latlng: { lat: 37.55428413833823, lng: 126.90759539909989 },
+//   },
+//   {
+//     isrc: 'USUM71407116',
+//     latlng: { lat: 37.55370364774336, lng: 126.9027976789222 },
+//   },
+//   {
+//     isrc: 'USA2P2414844',
+//     latlng: { lat: 37.55720029242072, lng: 126.9037438152235 },
+//   },
+// ];
 
 interface EventMarkerContainerProps {
   position: {
@@ -48,6 +51,7 @@ interface EventMarkerContainerProps {
 const KakaoMap = () => {
   const [isOpen, setIsOpen] = useState(false);
   const { locationInfo, setLocationInfo } = useLocationInfo();
+  const pinList = usePinStore((state) => state.pinList); // pinList 가져오기
 
   useEffect(() => {
     console.log(locationInfo);
@@ -55,6 +59,9 @@ const KakaoMap = () => {
 
   // mount 시
   useEffect(() => {
+    //토큰 발행
+    getSpotifyToken();
+
     navigator.geolocation.getCurrentPosition((pos) => {
       setLocationInfo({
         lat: pos.coords.latitude,
@@ -84,29 +91,44 @@ const KakaoMap = () => {
     const [isVisible, setIsVisible] = useState(false);
 
     return (
-      <MapMarker
-        position={position} // 마커를 표시할 위치
-        //마커 이미지
-        image={{
-          src: 'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png', // 마커이미지의 주소입니다
-          size: {
-            width: 24,
-            height: 35,
-          },
-        }}
-        onClick={(marker) => map.panTo(marker.getPosition())}
-        onMouseOver={() => setIsVisible(true)}
-        onMouseOut={() => setIsVisible(false)}
-      >
-        {isVisible && <TrackModule isrc={isrc} />}
-      </MapMarker>
+      <>
+        <MapMarker
+          position={position} // 마커를 표시할 위치
+          //마커 이미지
+          image={{
+            src: 'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png', // 마커이미지의 주소입니다
+            size: {
+              width: 24,
+              height: 35,
+            },
+          }}
+          onClick={(marker) => map.panTo(marker.getPosition())}
+          onMouseOver={() => setIsVisible(true)}
+          onMouseOut={() => setIsVisible(false)}
+        />
+        {isVisible && (
+          <CustomOverlayMap position={position}>
+            <TrackModule isrc={isrc} />
+          </CustomOverlayMap>
+        )}
+      </>
     );
   };
+
+  //현위치 클릭 시 이벤트
+  const handleCurrentLocClick = () => {
+    console.log('현위치 클릭!');
+    setIsOpen(!isOpen);
+  };
+
+  //핀추가
+  const addPin = usePinStore((state) => state.addPin);
 
   return (
     <>
       {/* <NextScript />
       <Script src={KAKAO_SDK_URL} strategy="beforeInteractive" /> */}
+      {isOpen && <ISRCForm />}
       <Map
         center={locationInfo} //지도 중심의 좌표
         style={{ width: '500px', height: '400px' }} //지도크기
@@ -115,22 +137,8 @@ const KakaoMap = () => {
         {/* 현 위치 마커 */}
         <MapMarker
           position={locationInfo}
-          image={{
-            src: 'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/marker_red.png', // 마커이미지의 주소입니다
-            size: {
-              width: 64,
-              height: 69,
-            }, // 마커이미지의 크기입니다
-            options: {
-              offset: {
-                x: 27,
-                y: 69,
-              }, // 마커이미지의 옵션입니다. 마커의 좌표와 일치시킬 이미지 안에서의 좌표를 설정합니다.
-            },
-          }}
           onClick={() => {
-            console.log(isOpen);
-            setIsOpen(!isOpen);
+            handleCurrentLocClick();
           }}
         />
         {/* 다중 마커 */}
@@ -164,7 +172,6 @@ const KakaoMap = () => {
           />
         ))}
       </Map>
-      {isOpen && <div className="w-16 h-16 bg-red-500">냐냥?</div>}
     </>
   );
 };

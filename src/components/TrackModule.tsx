@@ -16,7 +16,7 @@ interface CleanTrackInfo {
 //isrc를 받아 노래 정보를 띄우는 모듈
 
 const TrackModule = ({ isrc }: { isrc: string }) => {
-  const [track, setTrack] = useState({
+  const [track, setTrack] = useState<CleanTrackInfo>({
     name: '',
     artist: '',
     isrc: '',
@@ -25,7 +25,7 @@ const TrackModule = ({ isrc }: { isrc: string }) => {
     albumName: '',
   });
 
-  //노래정보 받아오기
+  // 노래정보 받아오기
   const { trackDetail, isLoading, error } = useGetTrackInfo(isrc);
 
   useEffect(() => {
@@ -44,11 +44,14 @@ const TrackModule = ({ isrc }: { isrc: string }) => {
   }
 
   return (
-    <div className="flex items-center p-2 border border-gray-300 rounded-md max-w-xs">
+    <div
+      className="flex items-center p-2 border border-gray-300 rounded-md max-w-full"
+      style={{ width: '300px' }}
+    >
       <img
         src={track.imageUrl}
         alt={track.name}
-        className="w-20 h-20 mr-2 rounded-md"
+        className="w-16 h-16 mr-2 rounded-md" // Adjusted size for mobile
       />
       <div className="flex-1">
         <h3 className="m-0 text-lg">{track.name}</h3>
