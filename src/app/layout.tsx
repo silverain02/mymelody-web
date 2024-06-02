@@ -5,6 +5,7 @@ import type { Viewport } from 'next';
 import Script from 'next/script';
 import { ColorModeScript } from '@chakra-ui/react';
 import TanstackProvider from '../../providers/TanstackProvider';
+import { NextScript } from 'next/document';
 
 const inter = Inter({ subsets: ['latin'] });
 
