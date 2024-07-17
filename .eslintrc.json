@@ -66,6 +66,16 @@
       {
         "pathGroups": [
           {
+            "pattern": "next/document",
+            "group": "external",
+            "position": "before"
+          },
+          {
+            "pattern": "next",
+            "group": "external",
+            "position": "after"
+          },
+          {
             "pattern": "@/lib/**",
             "group": "external"
           },
@@ -74,11 +84,11 @@
             "group": "type"
           },
           {
-            "pattern": "{hooks,@/hooks/**/*,./hooks/**,./use**,../use**,../../use**,../../../use**,,../../hooks/**,./_hooks/**,../../../_hooks/**}",
+            "pattern": "{hooks,@/hooks/**/*,./hooks/**,./use**,../use**,../../use**,../../../use**,,../../hooks/**,./_hooks/**,../../..//_hooks/**}",
             "group": "internal"
           },
           {
-            "pattern": "{utils/**/*,./utils,../utils,../../utils,../../../utils}",
+            "pattern": "{utils/**/*,./utils,../utils,../../utils,../../..//utils}",
             "group": "type"
           },
           {
@@ -102,7 +112,7 @@
             "group": "index"
           },
           {
-            "pattern": "{styles,./*.scss,../*.scss,../*.module.scss}",
+            "pattern": "{styles,./*.scss,../*.scss,..//*.module.scss}",
             "group": "index"
           }
         ],

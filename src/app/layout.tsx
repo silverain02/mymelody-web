@@ -1,11 +1,10 @@
 import type { Metadata } from 'next';
+import type { Viewport } from 'next';
 import { Inter } from 'next/font/google';
 import './globals.css';
-import type { Viewport } from 'next';
 import { ColorModeScript } from '@chakra-ui/react';
 import TanstackProvider from '../../providers/TanstackProvider';
-import Script from 'next/script';
-import { NextScript } from 'next/document';
+
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
