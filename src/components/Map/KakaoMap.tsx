@@ -75,7 +75,7 @@ const KakaoMap = () => {
       if (timeoutRef.current) {
         clearTimeout(timeoutRef.current);
       }
-      timeoutRef.current = window.setTimeout(() => setIsVisible(true), 100);
+      setIsVisible(true);
     };
 
     const handleMouseOut = () => {
