@@ -57,7 +57,8 @@ const TrackModule = ({ isrc }: { isrc: string }) => {
         <h3 className="m-0 text-lg">{track.name}</h3>
         <p className="my-1 text-gray-600">{track.artist}</p>
         <p className="my-1 text-gray-600">{track.albumName}</p>
-        <audio controls src={track.previewUrl} className="w-full">
+        <audio src={track.previewUrl} className="w-full">
+          <track kind="captions" />
           Your browser does not support the audio element.
         </audio>
       </div>
