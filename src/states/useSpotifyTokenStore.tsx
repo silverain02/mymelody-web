@@ -1,4 +1,3 @@
-// 기본 사용 예시
 import { create } from 'zustand';
 import { persist, createJSONStorage } from 'zustand/middleware';
 
@@ -7,15 +6,22 @@ interface SpotifyTokenState {
   setSpotifyToken: (spotifyToken: string) => void;
 }
 
-export const useSpotifyTokenStore = create(
-  persist(
-    (set) => ({
-      spotifyToken: '',
-      setSpotifyToken: (newSpotifyToken: string) =>
-        set({ spotifyToken: newSpotifyToken }),
-    }),
-    {
-      name: 'spotifyAccessToken',
-    }
-  )
+export const useSpotifyTokenStore = create<SpotifyTokenState>()(
+  typeof window !== 'undefined'
+    ? persist(
+        (set) => ({
+          spotifyToken: '',
+          setSpotifyToken: (newSpotifyToken: string) =>
+            set({ spotifyToken: newSpotifyToken }),
+        }),
+        {
+          name: 'spotifyAccessToken',
+          storage: createJSONStorage(() => localStorage),
+        }
+      )
+    : (set) => ({
+        spotifyToken: '',
+        setSpotifyToken: (newSpotifyToken: string) =>
+          set({ spotifyToken: newSpotifyToken }),
+      })
 );
