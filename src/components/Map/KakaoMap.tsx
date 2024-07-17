@@ -69,14 +69,29 @@ const KakaoMap = () => {
   }: EventMarkerContainerProps) => {
     const map = useMap();
     const [isVisible, setIsVisible] = useState(false);
+    const timeoutRef = useRef<number | null>(null);
 
     const handleMouseOver = () => {
-      setTimeout(() => setIsVisible(true), 100);
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+      }
+      timeoutRef.current = window.setTimeout(() => setIsVisible(true), 100);
     };
 
     const handleMouseOut = () => {
-      setTimeout(() => setIsVisible(false), 100);
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+      }
+      timeoutRef.current = window.setTimeout(() => setIsVisible(false), 100);
     };
+
+    useEffect(() => {
+      return () => {
+        if (timeoutRef.current) {
+          clearTimeout(timeoutRef.current);
+        }
+      };
+    }, []);
 
     return (
       <>
