@@ -106,6 +106,7 @@
       }
     ],
     "react-hooks/rules-of-hooks": "error",
-    "react-hooks/exhaustive-deps": "warn"
+    "react-hooks/exhaustive-deps": "warn",
+    "@next/next/no-document-import-in-page": "off"
   }
 }
