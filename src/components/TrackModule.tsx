@@ -13,8 +13,6 @@ interface CleanTrackInfo {
   albumName: string;
 }
 
-//isrc를 받아 노래 정보를 띄우는 모듈
-
 const TrackModule = ({ isrc }: { isrc: string }) => {
   const [track, setTrack] = useState<CleanTrackInfo>({
     name: '',
@@ -51,13 +49,13 @@ const TrackModule = ({ isrc }: { isrc: string }) => {
       <img
         src={track.imageUrl}
         alt={track.name}
-        className="w-16 h-16 mr-2 rounded-md" // Adjusted size for mobile
+        className="w-16 h-16 mr-2 rounded-md"
       />
       <div className="flex-1">
         <h3 className="m-0 text-lg">{track.name}</h3>
         <p className="my-1 text-gray-600">{track.artist}</p>
         <p className="my-1 text-gray-600">{track.albumName}</p>
-        <audio src={track.previewUrl} className="w-full">
+        <audio src={track.previewUrl} className="w-full" controls>
           <track kind="captions" />
           Your browser does not support the audio element.
         </audio>
