@@ -75,7 +75,7 @@ const KakaoMap = () => {
       if (timeoutRef.current) {
         clearTimeout(timeoutRef.current);
       }
-      setIsVisible(true);
+      timeoutRef.current = window.setTimeout(() => setIsVisible(true), 100);
     };
 
     const handleMouseOut = () => {
@@ -94,27 +94,31 @@ const KakaoMap = () => {
     }, []);
 
     return (
-      <>
-        <MapMarker
-          position={position} // 마커를 표시할 위치
-          //마커 이미지
-          image={{
-            src: 'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png', // 마커이미지의 주소입니다
-            size: {
-              width: 24,
-              height: 35,
-            },
-          }}
-          onClick={(marker) => map.panTo(marker.getPosition())}
-          onMouseOver={handleMouseOver}
-          onMouseOut={handleMouseOut}
-        />
+      <MapMarker
+        position={position} // 마커를 표시할 위치
+        //마커 이미지
+        image={{
+          src: 'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png', // 마커이미지의 주소입니다
+          size: {
+            width: 24,
+            height: 35,
+          },
+        }}
+        clickable={true}
+        onClick={(marker) => map.panTo(marker.getPosition())}
+        onMouseOver={() => {
+          setIsVisible(true);
+        }}
+        onMouseOut={() => {
+          setIsVisible(false);
+        }}
+      >
         {isVisible && (
-          <CustomOverlayMap position={position}>
-            <TrackModule isrc={isrc} />
-          </CustomOverlayMap>
+          // <CustomOverlayMap position={position}>
+          <TrackModule isrc={isrc} />
+          // </CustomOverlayMap>
         )}
-      </>
+      </MapMarker>
     );
   };
 
@@ -129,8 +133,6 @@ const KakaoMap = () => {
 
   return (
     <>
-      {/* <NextScript />
-      <Script src={KAKAO_SDK_URL} strategy="beforeInteractive" /> */}
       {isOpen && <ISRCForm />}
       <Map
         center={locationInfo} //지도 중심의 좌표
@@ -144,27 +146,6 @@ const KakaoMap = () => {
             handleCurrentLocClick();
           }}
         />
-        {/* 다중 마커 */}
-        {/* {pinList.map((position, index) => (
-          <MapMarker
-            key={`${position.isrc}-${position.latlng}`}
-            position={position.latlng} // 마커를 표시할 위치
-            image={{
-              src: 'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png', // 마커이미지의 주소입니다
-              size: {
-                width: 24,
-                height: 35,
-              }, // 마커이미지의 크기입니다
-            }}
-            title={position.isrc} // 마커의 타이틀, 마커에 마우스를 올리면 타이틀이 표시됩니다
-          />
-        ))} */}
-        {/* 커스텀 오버레이 */}
-        {/* {isOpen && (
-          <CustomOverlayMap position={{ lat: 37.5577222, lng: 126.9010131 }}>
-            <div className="w-16 h-16 bg-red-500">테스트요</div>
-          </CustomOverlayMap>
-        )} */}
 
         {/* 다중마커 이벤트 */}
         {pinList.map((value) => (
