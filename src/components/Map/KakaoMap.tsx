@@ -20,26 +20,6 @@ import usePinStore from '@/utils/store';
 
 const KAKAO_SDK_URL = `//dapi.kakao.com/v2/maps/sdk.js?appkey=${process.env.NEXT_PUBLIC_KAKAO_APP_KEY_JS}&autoload=false&libraries=services,clusterer`;
 
-//Mock Data
-// const pinList = [
-//   {
-//     isrc: 'US5TA2300179',
-//     latlng: { lat: 37.55543673765699, lng: 126.90673385881081 },
-//   },
-//   {
-//     isrc: 'USA2P2230223',
-//     latlng: { lat: 37.55428413833823, lng: 126.90759539909989 },
-//   },
-//   {
-//     isrc: 'USUM71407116',
-//     latlng: { lat: 37.55370364774336, lng: 126.9027976789222 },
-//   },
-//   {
-//     isrc: 'USA2P2414844',
-//     latlng: { lat: 37.55720029242072, lng: 126.9037438152235 },
-//   },
-// ];
-
 interface EventMarkerContainerProps {
   position: {
     lat: number;
@@ -90,6 +70,14 @@ const KakaoMap = () => {
     const map = useMap();
     const [isVisible, setIsVisible] = useState(false);
 
+    const handleMouseOver = () => {
+      setTimeout(() => setIsVisible(true), 100);
+    };
+
+    const handleMouseOut = () => {
+      setTimeout(() => setIsVisible(false), 100);
+    };
+
     return (
       <>
         <MapMarker
@@ -103,8 +91,8 @@ const KakaoMap = () => {
             },
           }}
           onClick={(marker) => map.panTo(marker.getPosition())}
-          onMouseOver={() => setIsVisible(true)}
-          onMouseOut={() => setIsVisible(false)}
+          onMouseOver={handleMouseOver}
+          onMouseOut={handleMouseOut}
         />
         {isVisible && (
           <CustomOverlayMap position={position}>
