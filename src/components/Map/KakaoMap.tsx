@@ -8,17 +8,10 @@ import {
 } from 'react-kakao-maps-sdk';
 import useLocationInfo from '@/hooks/useLocationInfo';
 import { useEffect, useRef, useState } from 'react';
-import Script from 'next/script';
-import { NextScript } from 'next/document';
 import TrackModule from '../TrackModule';
-import { getCleanTrackInfo } from '@/apis/services/getCleanTrackInfo';
-import { useGetTrackInfo } from '@/apis/api/get/useGetTrackInfo';
 import { getSpotifyToken } from '@/apis/utils/getSpotifyToken';
-import { getToken } from '@chakra-ui/react';
 import ISRCForm from '../ISRCForm';
 import usePinStore from '@/utils/store';
-
-const KAKAO_SDK_URL = `//dapi.kakao.com/v2/maps/sdk.js?appkey=${process.env.NEXT_PUBLIC_KAKAO_APP_KEY_JS}&autoload=false&libraries=services,clusterer`;
 
 interface EventMarkerContainerProps {
   position: {
@@ -69,29 +62,12 @@ const KakaoMap = () => {
   }: EventMarkerContainerProps) => {
     const map = useMap();
     const [isVisible, setIsVisible] = useState(false);
-    const timeoutRef = useRef<number | null>(null);
 
-    const handleMouseOver = () => {
-      if (timeoutRef.current) {
-        clearTimeout(timeoutRef.current);
-      }
-      timeoutRef.current = window.setTimeout(() => setIsVisible(true), 100);
-    };
-
-    const handleMouseOut = () => {
-      if (timeoutRef.current) {
-        clearTimeout(timeoutRef.current);
-      }
-      timeoutRef.current = window.setTimeout(() => setIsVisible(false), 100);
-    };
-
-    useEffect(() => {
-      return () => {
-        if (timeoutRef.current) {
-          clearTimeout(timeoutRef.current);
-        }
-      };
-    }, []);
+    // const handlePinTouch = (marker) => {
+    //   console.log('터치');
+    //   map.panTo(marker.getPosition());
+    //   setIsVisible(!isVisible);
+    // };
 
     return (
       <MapMarker
@@ -105,18 +81,16 @@ const KakaoMap = () => {
           },
         }}
         clickable={true}
-        onClick={(marker) => map.panTo(marker.getPosition())}
-        onMouseOver={() => {
-          setIsVisible(true);
-        }}
-        onMouseOut={() => {
-          setIsVisible(false);
+        onClick={(marker) => {
+          console.log('터치');
+          setIsVisible(!isVisible);
+          map.panTo(marker.getPosition());
         }}
       >
         {isVisible && (
-          // <CustomOverlayMap position={position}>
-          <TrackModule isrc={isrc} />
-          // </CustomOverlayMap>
+          <CustomOverlayMap position={position}>
+            <TrackModule isrc={isrc} />
+          </CustomOverlayMap>
         )}
       </MapMarker>
     );
