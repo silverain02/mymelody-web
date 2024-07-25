@@ -7,7 +7,7 @@ import {
   useMap,
 } from 'react-kakao-maps-sdk';
 import useLocationInfo from '@/hooks/useLocationInfo';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import TrackModule from '../TrackModule';
 import { getSpotifyToken } from '@/apis/utils/getSpotifyToken';
 import ISRCForm from '../ISRCForm';
@@ -23,14 +23,17 @@ interface EventMarkerContainerProps {
 
 const KakaoMap = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const { locationInfo, setLocationInfo } = useLocationInfo(); //현위치
+  const { locationInfo, setLocationInfo, updateLocationInfo } =
+    useLocationInfo(); //현위치 전역변수 받아오기
   const [centerLocation, setCenterLocation] = useState(locationInfo); //포커싱 위치
   const pinList = usePinStore((state) => state.pinList); // pinList 가져오기
 
-  // mount 시
   useEffect(() => {
     //토큰 발행
     getSpotifyToken();
+
+    // Initial location update
+    updateLocationInfo();
 
     const handlePosition = (pos: GeolocationPosition) => {
       console.log('현위치 업데이트!');
@@ -48,17 +51,21 @@ const KakaoMap = () => {
       if (distance > 10) {
         // 10미터 이상일 때만 포커싱 위치 업데이트
         setCenterLocation({ lat: newLat, lng: newLng });
+        setLocationInfo({ lat: newLat, lng: newLng });
       }
     };
 
-    navigator.geolocation.getCurrentPosition((pos) => {
-      setLocationInfo({
-        lat: pos.coords.latitude,
-        lng: pos.coords.longitude,
-      });
-    });
+    const watchId = navigator.geolocation.watchPosition(
+      handlePosition,
+      (error) => {
+        console.error('Error fetching geolocation: ', error);
+      }
+    );
 
-    navigator.geolocation.watchPosition(handlePosition);
+    // // Cleanup on unmount
+    // return () => {
+    //   navigator.geolocation.clearWatch(watchId);
+    // };
   }, []);
 
   const getDistance = (
