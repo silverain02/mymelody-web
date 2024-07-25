@@ -23,17 +23,33 @@ interface EventMarkerContainerProps {
 
 const KakaoMap = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const { locationInfo, setLocationInfo } = useLocationInfo();
+  const { locationInfo, setLocationInfo } = useLocationInfo(); //현위치
+  const [centerLocation, setCenterLocation] = useState(locationInfo); //포커싱 위치
   const pinList = usePinStore((state) => state.pinList); // pinList 가져오기
-
-  useEffect(() => {
-    console.log(locationInfo);
-  }, [locationInfo]);
 
   // mount 시
   useEffect(() => {
     //토큰 발행
     getSpotifyToken();
+
+    const handlePosition = (pos: GeolocationPosition) => {
+      console.log('현위치 업데이트!');
+
+      const newLat = pos.coords.latitude;
+      const newLng = pos.coords.longitude;
+
+      // 위치 변화가 일정 거리 이상일 때만 상태 업데이트
+      const distance = getDistance(
+        locationInfo.lat,
+        locationInfo.lng,
+        newLat,
+        newLng
+      );
+      if (distance > 10) {
+        // 10미터 이상일 때만 포커싱 위치 업데이트
+        setCenterLocation({ lat: newLat, lng: newLng });
+      }
+    };
 
     navigator.geolocation.getCurrentPosition((pos) => {
       setLocationInfo({
@@ -42,13 +58,31 @@ const KakaoMap = () => {
       });
     });
 
-    navigator.geolocation.watchPosition((pos) => {
-      setLocationInfo({
-        lat: pos.coords.latitude,
-        lng: pos.coords.longitude,
-      });
-    });
+    navigator.geolocation.watchPosition(handlePosition);
   }, []);
+
+  const getDistance = (
+    lat1: number | null,
+    lng1: number | null,
+    lat2: number,
+    lng2: number
+  ): number => {
+    if (lat1 === null || lng1 === null) return Infinity;
+
+    const R = 6371e3; // 지구 반지름 (미터)
+    const φ1 = (lat1 * Math.PI) / 180;
+    const φ2 = (lat2 * Math.PI) / 180;
+    const Δφ = ((lat2 - lat1) * Math.PI) / 180;
+    const Δλ = ((lng2 - lng1) * Math.PI) / 180;
+
+    const a =
+      Math.sin(Δφ / 2) * Math.sin(Δφ / 2) +
+      Math.cos(φ1) * Math.cos(φ2) * Math.sin(Δλ / 2) * Math.sin(Δλ / 2);
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+
+    const distance = R * c;
+    return distance;
+  };
 
   //카카오맵 불러오기
   const [loading, error] = useKakaoLoader({
@@ -62,12 +96,6 @@ const KakaoMap = () => {
   }: EventMarkerContainerProps) => {
     const map = useMap();
     const [isVisible, setIsVisible] = useState(false);
-
-    // const handlePinTouch = (marker) => {
-    //   console.log('터치');
-    //   map.panTo(marker.getPosition());
-    //   setIsVisible(!isVisible);
-    // };
 
     return (
       <MapMarker
@@ -84,7 +112,8 @@ const KakaoMap = () => {
         onClick={(marker) => {
           console.log('터치');
           setIsVisible(!isVisible);
-          map.panTo(marker.getPosition());
+          setCenterLocation(position);
+          // map.panTo(marker.getPosition());
         }}
       >
         {isVisible && (
@@ -109,7 +138,7 @@ const KakaoMap = () => {
     <>
       {isOpen && <ISRCForm />}
       <Map
-        center={locationInfo} //지도 중심의 좌표
+        center={centerLocation} //지도 중심의 좌표
         style={{ width: '500px', height: '400px' }} //지도크기
         level={3} //지도 확대 레벨
       >
