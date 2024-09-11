@@ -3,7 +3,7 @@ import useLocationInfo from '@/hooks/useLocationInfo';
 import usePinStore from '@/utils/store';
 import React, { useState } from 'react';
 
-function ISRCForm() {
+export const ISRCForm=()=> {
   const [isrc, setIsrc] = useState('');
   const { locationInfo, setLocationInfo } = useLocationInfo();
   const addPin = usePinStore((state) => state.addPin);
@@ -50,4 +50,3 @@ function ISRCForm() {
   );
 }
 
-export default ISRCForm;

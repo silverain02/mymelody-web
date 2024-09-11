@@ -41,11 +41,6 @@ export default function RootLayout({
           <ColorModeScript />
           <div>{children}</div>
         </TanstackProvider>
-        {/* <NextScript />
-        <Script
-          src="https://developers.kakao.com/sdk/js/kakao.js"
-          strategy="afterInteractive"
-        /> */}
       </body>
     </html>
   );

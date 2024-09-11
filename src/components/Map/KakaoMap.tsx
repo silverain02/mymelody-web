@@ -10,9 +10,10 @@ import useLocationInfo from '@/hooks/useLocationInfo';
 import { useEffect, useState } from 'react';
 import TrackModule from '../TrackModule';
 import { getSpotifyToken } from '@/apis/utils/getSpotifyToken';
-import ISRCForm from '../ISRCForm';
 import usePinStore from '@/utils/store';
 import { getDistance } from '@/utils/distance';
+import { MusicSelectModal } from '../MusicSelectModal';
+import { useDisclosure } from '@chakra-ui/react';
 
 interface EventMarkerContainerProps {
   position: {
@@ -23,7 +24,6 @@ interface EventMarkerContainerProps {
 }
 
 const KakaoMap = () => {
-  const [isOpen, setIsOpen] = useState(false);
   const { locationInfo, setLocationInfo, updateLocationInfo } =
     useLocationInfo(); // 현위치 전역변수 받아오기
   const [currentLocation, setCurrentLocation] = useState(locationInfo); // 현위치 마커용 상태
@@ -48,11 +48,12 @@ const KakaoMap = () => {
           newLng
         );
 
-        if (distance > 10) {
-          // 10미터 이상일 때만 업데이트
-          setLocationInfo({ lat: newLat, lng: newLng });
-          setCurrentLocation({ lat: newLat, lng: newLng });
-        }
+        // if (distance > 10) {
+        //   // 10미터 이상일 때만 업데이트
+        //   console.log('10미터이상');
+        //   setLocationInfo({ lat: newLat, lng: newLng });
+        //   setCurrentLocation({ lat: newLat, lng: newLng });
+        // }
       },
       (err) => {
         console.error(err);
@@ -109,26 +110,17 @@ const KakaoMap = () => {
     );
   };
 
-  // 현위치 클릭 시 이벤트
-  const handleCurrentLocClick = () => {
-    setIsOpen(!isOpen);
-  };
+  const { isOpen, onOpen, onClose } = useDisclosure();
 
   return (
     <>
-      {isOpen && <ISRCForm />}
       <Map
         center={currentLocation} // 지도 중심의 좌표
         style={{ width: '500px', height: '400px' }} // 지도크기
         level={3} // 지도 확대 레벨
       >
         {/* 현 위치 마커 */}
-        <MapMarker
-          position={currentLocation}
-          onClick={() => {
-            handleCurrentLocClick();
-          }}
-        />
+        <MapMarker position={currentLocation} onClick={onOpen} />
 
         {/* 다중마커 이벤트 */}
         {pinList.map((value) => (
@@ -138,6 +130,8 @@ const KakaoMap = () => {
             isrc={value.isrc}
           />
         ))}
+        {/* 음악 검색 모달 */}
+        <MusicSelectModal isOpen={isOpen} onClose={onClose} />
       </Map>
     </>
   );
