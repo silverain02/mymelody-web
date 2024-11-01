@@ -95,7 +95,15 @@ const KakaoMap = () => {
       >
         {isVisible && (
           <CustomOverlayMap position={position} yAnchor={1}>
-            <TrackModule isrc={isrc} />
+            <div
+              style={{
+                backgroundColor: 'transparent', // 배경색 투명화
+                boxShadow: 'none', // 그림자 제거
+                border: 'none', // 테두리 제거
+              }}
+            >
+              <TrackModule isrc={isrc} />
+            </div>
           </CustomOverlayMap>
         )}
       </MapMarker>
