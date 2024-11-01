@@ -45,9 +45,6 @@ const TrackModule = ({
     }
   }, [isLoading, trackDetail]);
 
-  if (isLoading) return <div>Loading...</div>;
-  if (error) return <div>Error loading track info.</div>;
-
   // 앨범 이미지 회전 애니메이션 정의
   const rotate = keyframes`
     from { transform: rotate(0deg); }
@@ -66,7 +63,7 @@ const TrackModule = ({
   };
 
   return (
-    <CustomOverlayMap position={position} yAnchor={1}>
+    <CustomOverlayMap position={position}>
       <Flex
         direction="row"
         align="center"
@@ -77,8 +74,6 @@ const TrackModule = ({
         cursor="pointer"
         maxW="250px"
         onClick={handleAlbumClick}
-        minWidth="100px" // 최소 너비 설정
-        minHeight="50px" // 최소 높이 설정
       >
         {/* 앨범 이미지 */}
         <Box position="relative">
