@@ -66,12 +66,14 @@ const TrackModule = ({ isrc }: { isrc: string }) => {
       cursor="pointer"
       maxW="250px"
       onClick={handleAlbumClick}
+      minWidth="100px" // 최소 너비 설정
+      minHeight="50px" // 최소 높이 설정
     >
       {/* 앨범 이미지 */}
       <Box position="relative">
         <Image
-          src={track.imageUrl}
-          alt={track.name}
+          src={track.imageUrl || 'https://via.placeholder.com/50'}
+          alt={track.name || 'No Image'}
           boxSize="50px"
           borderRadius="full"
           objectFit="cover"
