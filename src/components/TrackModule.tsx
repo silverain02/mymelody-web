@@ -4,6 +4,7 @@ import { useGetTrackInfo } from '@/apis/api/get/useGetTrackInfo';
 import { getCleanTrackInfo } from '@/apis/services/getCleanTrackInfo';
 import { useEffect, useState } from 'react';
 import { Image, Text, Box, Flex, keyframes } from '@chakra-ui/react';
+import { CustomOverlayMap } from 'react-kakao-maps-sdk';
 
 interface CleanTrackInfo {
   name: string;
@@ -14,7 +15,16 @@ interface CleanTrackInfo {
   albumName: string;
 }
 
-const TrackModule = ({ isrc }: { isrc: string }) => {
+const TrackModule = ({
+  isrc,
+  position,
+}: {
+  isrc: string;
+  position: {
+    lat: number;
+    lng: number;
+  };
+}) => {
   const [track, setTrack] = useState<CleanTrackInfo>({
     name: '',
     artist: '',
@@ -56,47 +66,49 @@ const TrackModule = ({ isrc }: { isrc: string }) => {
   };
 
   return (
-    <Flex
-      direction="row"
-      align="center"
-      p={2}
-      bg="white"
-      borderRadius="lg"
-      boxShadow="md"
-      cursor="pointer"
-      maxW="250px"
-      onClick={handleAlbumClick}
-      minWidth="100px" // 최소 너비 설정
-      minHeight="50px" // 최소 높이 설정
-    >
-      {/* 앨범 이미지 */}
-      <Box position="relative">
-        <Image
-          src={track.imageUrl || 'https://via.placeholder.com/50'}
-          alt={track.name || 'No Image'}
-          boxSize="50px"
-          borderRadius="full"
-          objectFit="cover"
-          animation={isPlaying ? `${rotate} 2s linear infinite` : undefined}
-        />
-      </Box>
+    <CustomOverlayMap position={position} yAnchor={1}>
+      <Flex
+        direction="row"
+        align="center"
+        p={2}
+        bg="white"
+        borderRadius="lg"
+        boxShadow="md"
+        cursor="pointer"
+        maxW="250px"
+        onClick={handleAlbumClick}
+        minWidth="100px" // 최소 너비 설정
+        minHeight="50px" // 최소 높이 설정
+      >
+        {/* 앨범 이미지 */}
+        <Box position="relative">
+          <Image
+            src={track.imageUrl || 'https://via.placeholder.com/50'}
+            alt={track.name || 'No Image'}
+            boxSize="50px"
+            borderRadius="full"
+            objectFit="cover"
+            animation={isPlaying ? `${rotate} 2s linear infinite` : undefined}
+          />
+        </Box>
 
-      <Box ml={3} overflow="hidden">
-        <Text fontSize="sm" fontWeight="bold" isTruncated maxW="120px">
-          {track.name}
-        </Text>
-        <Text fontSize="xs" color="gray.500" isTruncated maxW="100px">
-          {track.artist}
-        </Text>
-      </Box>
+        <Box ml={3} overflow="hidden">
+          <Text fontSize="sm" fontWeight="bold" isTruncated maxW="120px">
+            {track.name}
+          </Text>
+          <Text fontSize="xs" color="gray.500" isTruncated maxW="100px">
+            {track.artist}
+          </Text>
+        </Box>
 
-      {/* 오디오 프리뷰 */}
-      <audio id={`audio-${isrc}`} style={{ display: 'none' }}>
-        <track kind="captions" />
-        <source src={track.previewUrl} type="audio/mpeg" />
-        Your browser does not support the audio element.
-      </audio>
-    </Flex>
+        {/* 오디오 프리뷰 */}
+        <audio id={`audio-${isrc}`} style={{ display: 'none' }}>
+          <track kind="captions" />
+          <source src={track.previewUrl} type="audio/mpeg" />
+          Your browser does not support the audio element.
+        </audio>
+      </Flex>
+    </CustomOverlayMap>
   );
 };
 
