@@ -70,8 +70,8 @@ const TrackModule = ({ isrc }: { isrc: string }) => {
       {/* 앨범 이미지 */}
       <Box position="relative">
         <Image
-          src={track.imageUrl || 'https://via.placeholder.com/50'}
-          alt={track.name || 'No Image'}
+          src={track.imageUrl}
+          alt={track.name}
           boxSize="50px"
           borderRadius="full"
           objectFit="cover"
