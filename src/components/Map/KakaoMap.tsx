@@ -47,13 +47,6 @@ const KakaoMap = () => {
           newLat,
           newLng
         );
-
-        // if (distance > 10) {
-        //   // 10미터 이상일 때만 업데이트
-        //   console.log('10미터이상');
-        //   setLocationInfo({ lat: newLat, lng: newLng });
-        //   setCurrentLocation({ lat: newLat, lng: newLng });
-        // }
       },
       (err) => {
         console.error(err);
@@ -96,7 +89,6 @@ const KakaoMap = () => {
         }}
         clickable={true}
         onClick={(marker) => {
-          console.log('터치');
           setIsVisible(!isVisible);
           map.panTo(marker.getPosition());
         }}
@@ -116,7 +108,7 @@ const KakaoMap = () => {
     <>
       <Map
         center={currentLocation} // 지도 중심의 좌표
-        style={{ width: '500px', height: '400px' }} // 지도크기
+        style={{ width: '100vw', height: '100vh' }} // 지도크기
         level={3} // 지도 확대 레벨
       >
         {/* 현 위치 마커 */}
