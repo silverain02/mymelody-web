@@ -41,12 +41,6 @@ const KakaoMap = () => {
       (pos) => {
         const newLat = pos.coords.latitude;
         const newLng = pos.coords.longitude;
-        const distance = getDistance(
-          locationInfo.lat,
-          locationInfo.lng,
-          newLat,
-          newLng
-        );
       },
       (err) => {
         console.error(err);

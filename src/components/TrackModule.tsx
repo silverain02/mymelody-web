@@ -59,32 +59,32 @@ const TrackModule = ({ isrc }: { isrc: string }) => {
     <Flex
       direction="row"
       align="center"
-      p={2}
+      p={1}
       bg="gray.100"
-      borderRadius="lg"
-      boxShadow="md"
+      border="none"
+      boxShadow="none"
       cursor="pointer"
-      maxW="320px"
+      maxW="200px"
       onClick={handleAlbumClick}
+      style={{ backgroundColor: 'transparent' }}
     >
       {/* 앨범 이미지 */}
       <Box position="relative">
         <Image
           src={track.imageUrl}
           alt={track.name}
-          boxSize="50px"
+          boxSize="40px"
           borderRadius="full"
           objectFit="cover"
           animation={isPlaying ? `${rotate} 2s linear infinite` : undefined}
         />
       </Box>
 
-      {/* 타이틀과 가수 */}
-      <Box ml={3} overflow="hidden">
-        <Text fontSize="md" fontWeight="bold" isTruncated maxW="140px">
+      <Box ml={2} overflow="hidden">
+        <Text fontSize="sm" fontWeight="bold" isTruncated maxW="100px">
           {track.name}
         </Text>
-        <Text fontSize="sm" color="gray.500" isTruncated maxW="120px">
+        <Text fontSize="xs" color="gray.500" isTruncated maxW="80px">
           {track.artist}
         </Text>
       </Box>
