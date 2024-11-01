@@ -4,7 +4,6 @@ import { useGetTrackInfo } from '@/apis/api/get/useGetTrackInfo';
 import { getCleanTrackInfo } from '@/apis/services/getCleanTrackInfo';
 import { useEffect, useState } from 'react';
 import { Image, Text, Box, Flex, keyframes } from '@chakra-ui/react';
-import { CustomOverlayMap } from 'react-kakao-maps-sdk';
 
 interface CleanTrackInfo {
   name: string;
@@ -15,16 +14,7 @@ interface CleanTrackInfo {
   albumName: string;
 }
 
-const TrackModule = ({
-  isrc,
-  position,
-}: {
-  isrc: string;
-  position: {
-    lat: number;
-    lng: number;
-  };
-}) => {
+const TrackModule = ({ isrc }: { isrc: string }) => {
   const [track, setTrack] = useState<CleanTrackInfo>({
     name: '',
     artist: '',
@@ -45,6 +35,9 @@ const TrackModule = ({
     }
   }, [isLoading, trackDetail]);
 
+  if (isLoading) return <div>Loading...</div>;
+  if (error) return <div>Error loading track info.</div>;
+
   // 앨범 이미지 회전 애니메이션 정의
   const rotate = keyframes`
     from { transform: rotate(0deg); }
@@ -63,47 +56,45 @@ const TrackModule = ({
   };
 
   return (
-    <CustomOverlayMap position={position}>
-      <Flex
-        direction="row"
-        align="center"
-        p={2}
-        bg="white"
-        borderRadius="lg"
-        boxShadow="md"
-        cursor="pointer"
-        maxW="250px"
-        onClick={handleAlbumClick}
-      >
-        {/* 앨범 이미지 */}
-        <Box position="relative">
-          <Image
-            src={track.imageUrl || 'https://via.placeholder.com/50'}
-            alt={track.name || 'No Image'}
-            boxSize="50px"
-            borderRadius="full"
-            objectFit="cover"
-            animation={isPlaying ? `${rotate} 2s linear infinite` : undefined}
-          />
-        </Box>
+    <Flex
+      direction="row"
+      align="center"
+      p={2}
+      bg="white"
+      borderRadius="lg"
+      boxShadow="md"
+      cursor="pointer"
+      maxW="250px"
+      onClick={handleAlbumClick}
+    >
+      {/* 앨범 이미지 */}
+      <Box position="relative">
+        <Image
+          src={track.imageUrl || 'https://via.placeholder.com/50'}
+          alt={track.name || 'No Image'}
+          boxSize="50px"
+          borderRadius="full"
+          objectFit="cover"
+          animation={isPlaying ? `${rotate} 2s linear infinite` : undefined}
+        />
+      </Box>
 
-        <Box ml={3} overflow="hidden">
-          <Text fontSize="sm" fontWeight="bold" isTruncated maxW="120px">
-            {track.name}
-          </Text>
-          <Text fontSize="xs" color="gray.500" isTruncated maxW="100px">
-            {track.artist}
-          </Text>
-        </Box>
+      <Box ml={3} overflow="hidden">
+        <Text fontSize="sm" fontWeight="bold" isTruncated maxW="120px">
+          {track.name}
+        </Text>
+        <Text fontSize="xs" color="gray.500" isTruncated maxW="100px">
+          {track.artist}
+        </Text>
+      </Box>
 
-        {/* 오디오 프리뷰 */}
-        <audio id={`audio-${isrc}`} style={{ display: 'none' }}>
-          <track kind="captions" />
-          <source src={track.previewUrl} type="audio/mpeg" />
-          Your browser does not support the audio element.
-        </audio>
-      </Flex>
-    </CustomOverlayMap>
+      {/* 오디오 프리뷰 */}
+      <audio id={`audio-${isrc}`} style={{ display: 'none' }}>
+        <track kind="captions" />
+        <source src={track.previewUrl} type="audio/mpeg" />
+        Your browser does not support the audio element.
+      </audio>
+    </Flex>
   );
 };
 
