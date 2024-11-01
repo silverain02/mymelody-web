@@ -25,18 +25,14 @@ interface EventMarkerContainerProps {
 
 const KakaoMap = () => {
   const { locationInfo, setLocationInfo, updateLocationInfo } =
-    useLocationInfo(); // 현위치 전역변수 받아오기
-  const [currentLocation, setCurrentLocation] = useState(locationInfo); // 현위치 마커용 상태
-  const pinList = usePinStore((state) => state.pinList); // pinList 가져오기
+    useLocationInfo();
+  const [currentLocation, setCurrentLocation] = useState(locationInfo);
+  const pinList = usePinStore((state) => state.pinList);
 
   useEffect(() => {
-    // 토큰 발행
     getSpotifyToken();
-
-    // Initial location update
     updateLocationInfo();
 
-    // Watch position
     const watchId = navigator.geolocation.watchPosition(
       (pos) => {
         const newLat = pos.coords.latitude;
@@ -63,25 +59,42 @@ const KakaoMap = () => {
     };
   }, []);
 
-  // 카카오맵 불러오기
   const [loading, error] = useKakaoLoader({
     appkey: process.env.NEXT_PUBLIC_KAKAO_APP_KEY_JS || '',
   });
 
-  // 마커 이벤트
+  const { isOpen, onOpen, onClose } = useDisclosure();
+
+  // Track currently visible overlay
+  const [visibleOverlayId, setVisibleOverlayId] = useState<string | null>(null);
+
+  // Custom marker component with unique overlay visibility per marker
   const EventMarkerContainer = ({
     position,
     isrc,
-  }: EventMarkerContainerProps) => {
+    id,
+  }: EventMarkerContainerProps & { id: string }) => {
     const map = useMap();
-    const [isVisible, setIsVisible] = useState(false);
+
+    useEffect(() => {
+      const handleOutsideClick = (event: MouseEvent) => {
+        const target = event.target as HTMLElement | null; // Cast to HTMLElement
+        if (target && !target.closest('.custom-overlay')) {
+          setVisibleOverlayId(null);
+        }
+      };
+
+      document.addEventListener('mousedown', handleOutsideClick);
+      return () => {
+        document.removeEventListener('mousedown', handleOutsideClick);
+      };
+    }, []);
 
     return (
       <MapMarker
-        position={position} // 마커를 표시할 위치
-        // 마커 이미지
+        position={position}
         image={{
-          src: 'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png', // 마커이미지의 주소입니다
+          src: 'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png',
           size: {
             width: 24,
             height: 35,
@@ -89,40 +102,46 @@ const KakaoMap = () => {
         }}
         clickable={true}
         onClick={(marker) => {
-          setIsVisible(!isVisible);
+          setVisibleOverlayId(visibleOverlayId === id ? null : id);
           map.panTo(marker.getPosition());
         }}
       >
-        {isVisible && (
+        {visibleOverlayId === id && (
           <CustomOverlayMap position={position} yAnchor={1}>
-            <TrackModule isrc={isrc} />
+            <div
+              className="custom-overlay"
+              style={{
+                backgroundColor: 'transparent',
+                boxShadow: 'none',
+                border: 'none',
+              }}
+            >
+              <TrackModule isrc={isrc} />
+            </div>
           </CustomOverlayMap>
         )}
       </MapMarker>
     );
   };
 
-  const { isOpen, onOpen, onClose } = useDisclosure();
-
   return (
     <>
       <Map
-        center={currentLocation} // 지도 중심의 좌표
-        style={{ width: '100vw', height: '100vh' }} // 지도크기
-        level={3} // 지도 확대 레벨
+        center={currentLocation}
+        style={{ width: '100vw', height: '100vh' }}
+        level={3}
       >
-        {/* 현 위치 마커 */}
         <MapMarker position={currentLocation} onClick={onOpen} />
 
-        {/* 다중마커 이벤트 */}
         {pinList.map((value) => (
           <EventMarkerContainer
             key={`EventMarkerContainer-${value.latlng.lat}-${value.latlng.lng}`}
+            id={`${value.latlng.lat}-${value.latlng.lng}`}
             position={value.latlng}
             isrc={value.isrc}
           />
         ))}
-        {/* 음악 검색 모달 */}
+
         <MusicSelectModal isOpen={isOpen} onClose={onClose} />
       </Map>
     </>
