@@ -1,5 +1,6 @@
 import KakaoMap from '@/components/Map/KakaoMap';
-import { ChakraProvider } from '@chakra-ui/react';
+import TrackModule from '@/components/TrackModule';
+import { ChakraProvider, Tr } from '@chakra-ui/react';
 export default function Page() {
   return (
     <>

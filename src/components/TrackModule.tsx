@@ -3,14 +3,7 @@
 import { useGetTrackInfo } from '@/apis/api/get/useGetTrackInfo';
 import { getCleanTrackInfo } from '@/apis/services/getCleanTrackInfo';
 import { useEffect, useState } from 'react';
-import {
-  SimpleGrid,
-  Image,
-  Text,
-  Box,
-  Flex,
-  keyframes,
-} from '@chakra-ui/react';
+import { Image, Text, Box, Flex, keyframes } from '@chakra-ui/react';
 
 interface CleanTrackInfo {
   name: string;
@@ -30,6 +23,7 @@ const TrackModule = ({ isrc }: { isrc: string }) => {
     imageUrl: '',
     albumName: '',
   });
+  const [isPlaying, setIsPlaying] = useState(false);
 
   // 노래정보 받아오기
   const { trackDetail, isLoading, error } = useGetTrackInfo(isrc);
@@ -41,13 +35,8 @@ const TrackModule = ({ isrc }: { isrc: string }) => {
     }
   }, [isLoading, trackDetail]);
 
-  if (isLoading) {
-    return <div>Loading...</div>;
-  }
-
-  if (error) {
-    return <div>Error loading track info.</div>;
-  }
+  if (isLoading) return <div>Loading...</div>;
+  if (error) return <div>Error loading track info.</div>;
 
   // 앨범 이미지 회전 애니메이션 정의
   const rotate = keyframes`
@@ -55,43 +44,47 @@ const TrackModule = ({ isrc }: { isrc: string }) => {
     to { transform: rotate(360deg); }
   `;
 
+  // 앨범 클릭 시 회전 및 음악 재생/정지 토글
+  const handleAlbumClick = () => {
+    const audio = document.getElementById(`audio-${isrc}`) as HTMLAudioElement;
+    if (isPlaying) {
+      audio.pause();
+    } else {
+      audio.play();
+    }
+    setIsPlaying(!isPlaying);
+  };
+
   return (
     <Flex
-      key={isrc}
       direction="row"
       align="center"
-      p={4}
-      border="1px solid"
-      borderColor="gray.200"
-      borderRadius="md"
-      overflow="hidden"
+      p={2}
+      bg="gray.100"
+      borderRadius="lg"
       boxShadow="md"
       cursor="pointer"
+      maxW="320px"
+      onClick={handleAlbumClick}
     >
       {/* 앨범 이미지 */}
       <Box position="relative">
         <Image
           src={track.imageUrl}
           alt={track.name}
-          boxSize="80px"
+          boxSize="50px"
           borderRadius="full"
           objectFit="cover"
-          cursor="pointer"
+          animation={isPlaying ? `${rotate} 2s linear infinite` : undefined}
         />
       </Box>
 
       {/* 타이틀과 가수 */}
-      <Box ml={4}>
-        <Text
-          fontSize="lg"
-          fontWeight="bold"
-          mr={2}
-          isTruncated // 너무 길 경우 잘리도록 설정
-          maxW="200px" // 텍스트 영역에 최대 너비 설정
-        >
+      <Box ml={3} overflow="hidden">
+        <Text fontSize="md" fontWeight="bold" isTruncated maxW="140px">
           {track.name}
         </Text>
-        <Text fontSize="sm" color="gray.500" isTruncated maxW="100px">
+        <Text fontSize="sm" color="gray.500" isTruncated maxW="120px">
           {track.artist}
         </Text>
       </Box>
