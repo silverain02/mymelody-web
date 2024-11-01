@@ -108,16 +108,7 @@ const KakaoMap = () => {
       >
         {visibleOverlayId === id && (
           <CustomOverlayMap position={position} yAnchor={1}>
-            <div
-              className="custom-overlay"
-              style={{
-                backgroundColor: 'transparent',
-                boxShadow: 'none',
-                border: 'none',
-              }}
-            >
-              <TrackModule isrc={isrc} />
-            </div>
+            {/* <TrackModule isrc={isrc} /> */}
           </CustomOverlayMap>
         )}
       </MapMarker>
