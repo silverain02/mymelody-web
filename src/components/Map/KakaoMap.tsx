@@ -11,9 +11,9 @@ import { useEffect, useState } from 'react';
 import TrackModule from '../TrackModule';
 import { getSpotifyToken } from '@/apis/utils/getSpotifyToken';
 import usePinStore from '@/utils/store';
+import { getDistance } from '@/utils/distance';
 import { MusicSelectModal } from '../MusicSelectModal';
 import { useDisclosure } from '@chakra-ui/react';
-import { Image, Text, Box, Flex, keyframes } from '@chakra-ui/react';
 
 interface EventMarkerContainerProps {
   position: {
@@ -41,6 +41,12 @@ const KakaoMap = () => {
       (pos) => {
         const newLat = pos.coords.latitude;
         const newLng = pos.coords.longitude;
+        const distance = getDistance(
+          locationInfo.lat,
+          locationInfo.lng,
+          newLat,
+          newLng
+        );
       },
       (err) => {
         console.error(err);
@@ -62,40 +68,41 @@ const KakaoMap = () => {
     appkey: process.env.NEXT_PUBLIC_KAKAO_APP_KEY_JS || '',
   });
 
-  const [currentIsrc, setCurrentIsrc] = useState('');
-
   // 마커 이벤트
   const EventMarkerContainer = ({
     position,
     isrc,
   }: EventMarkerContainerProps) => {
     const map = useMap();
+    const [isVisible, setIsVisible] = useState(false);
 
     return (
-      <>
-        <MapMarker
-          position={position} // 마커를 표시할 위치
-          // 마커 이미지
-          image={{
-            src: 'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png', // 마커이미지의 주소입니다
-            size: {
-              width: 24,
-              height: 35,
-            },
-          }}
-          clickable={true}
-          onClick={(marker) => {
-            setIsVisible(!isVisible);
-            map.panTo(marker.getPosition());
-            setCurrentIsrc(isrc);
-          }}
-        ></MapMarker>
-      </>
+      <MapMarker
+        position={position} // 마커를 표시할 위치
+        // 마커 이미지
+        image={{
+          src: 'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png', // 마커이미지의 주소입니다
+          size: {
+            width: 24,
+            height: 35,
+          },
+        }}
+        clickable={true}
+        onClick={(marker) => {
+          setIsVisible(!isVisible);
+          map.panTo(marker.getPosition());
+        }}
+      >
+        {isVisible && (
+          <CustomOverlayMap position={position} yAnchor={1}>
+            <TrackModule isrc={isrc} />
+          </CustomOverlayMap>
+        )}
+      </MapMarker>
     );
   };
 
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const [isVisible, setIsVisible] = useState(false);
 
   return (
     <>
@@ -115,24 +122,6 @@ const KakaoMap = () => {
             isrc={value.isrc}
           />
         ))}
-        {/* 하단 TrackModule */}
-        {isVisible && (
-          <Box
-            position="absolute"
-            bottom="0"
-            left="0"
-            w="100%"
-            bg="rgba(255, 255, 255, 0.95)"
-            boxShadow="0px -2px 10px rgba(0, 0, 0, 0.2)"
-            display="flex"
-            justifyContent="center"
-            py={3}
-            transition="transform 0.3s ease-in-out"
-            transform={isVisible ? 'translateY(0)' : 'translateY(100%)'}
-          >
-            <TrackModule isrc={currentIsrc} />
-          </Box>
-        )}
         {/* 음악 검색 모달 */}
         <MusicSelectModal isOpen={isOpen} onClose={onClose} />
       </Map>
