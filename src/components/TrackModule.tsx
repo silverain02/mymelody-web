@@ -60,11 +60,11 @@ const TrackModule = ({ isrc }: { isrc: string }) => {
       direction="row"
       align="center"
       p={2}
-      bg="white"
+      bg="gray.100"
       borderRadius="lg"
       boxShadow="md"
       cursor="pointer"
-      maxW="250px"
+      maxW="320px"
       onClick={handleAlbumClick}
     >
       {/* 앨범 이미지 */}
@@ -79,11 +79,12 @@ const TrackModule = ({ isrc }: { isrc: string }) => {
         />
       </Box>
 
+      {/* 타이틀과 가수 */}
       <Box ml={3} overflow="hidden">
-        <Text fontSize="sm" fontWeight="bold" isTruncated maxW="120px">
+        <Text fontSize="md" fontWeight="bold" isTruncated maxW="140px">
           {track.name}
         </Text>
-        <Text fontSize="xs" color="gray.500" isTruncated maxW="100px">
+        <Text fontSize="sm" color="gray.500" isTruncated maxW="120px">
           {track.artist}
         </Text>
       </Box>
