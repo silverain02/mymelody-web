@@ -73,14 +73,13 @@ const TrackModule = ({ isrc }: { isrc: string }) => {
       maxW="80vw"
     >
       {/* 앨범 이미지 */}
-      <Box position="relative" mr="2vw">
+      <Box position="relative" mr="2vw" onClick={handleAlbumClick}>
         <Image
           src={track.imageUrl}
           alt={track.name}
           boxSize="6vh"
           borderRadius="full"
           objectFit="cover"
-          onClick={handleAlbumClick}
           animation={isPlaying ? `${rotate} 2s linear infinite` : undefined}
         />
       </Box>
