@@ -91,32 +91,29 @@ const KakaoMap = () => {
     }, []);
 
     return (
-      <MapMarker
-        position={position}
-        image={{
-          src: 'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png',
-          size: {
-            width: 24,
-            height: 35,
-          },
-        }}
-        clickable={true}
-        onClick={(marker) => {
-          setVisibleOverlayId(visibleOverlayId === id ? null : id);
-          map.panTo(marker.getPosition());
-        }}
-      >
+      <>
+        <MapMarker
+          position={position}
+          image={{
+            src: 'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png',
+            size: {
+              width: 24,
+              height: 35,
+            },
+          }}
+          clickable={true}
+          onClick={(marker) => {
+            console.log('마커클릭');
+            setVisibleOverlayId(visibleOverlayId === id ? null : id);
+            map.panTo(marker.getPosition());
+          }}
+        />
         {visibleOverlayId === id && (
-          <CustomOverlayMap
-            position={position}
-            yAnchor={1.5}
-            xAnchor={0.8}
-            zIndex={10}
-          >
+          <CustomOverlayMap position={position} yAnchor={1.5} xAnchor={0.8}>
             <TrackModule isrc={isrc} />
           </CustomOverlayMap>
         )}
-      </MapMarker>
+      </>
     );
   };
 

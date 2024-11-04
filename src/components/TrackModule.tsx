@@ -43,6 +43,7 @@ const TrackModule = ({ isrc }: { isrc: string }) => {
 
   // 앨범 클릭 시 회전 및 음악 재생/정지 토글
   const handleAlbumClick = () => {
+    console.log('앨범클릭');
     const audio = document.getElementById(`audio-${isrc}`) as HTMLAudioElement;
     if (isPlaying) {
       audio.pause();
