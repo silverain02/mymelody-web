@@ -3,7 +3,15 @@
 import { useGetTrackInfo } from '@/apis/api/get/useGetTrackInfo';
 import { getCleanTrackInfo } from '@/apis/services/getCleanTrackInfo';
 import { useEffect, useState } from 'react';
-import { Image, Text, Box, Flex, keyframes } from '@chakra-ui/react';
+import {
+  Image,
+  Text,
+  Box,
+  Flex,
+  keyframes,
+  IconButton,
+} from '@chakra-ui/react';
+import { ChatIcon, StarIcon } from '@chakra-ui/icons';
 
 interface CleanTrackInfo {
   name: string;
@@ -56,34 +64,56 @@ const TrackModule = ({ isrc }: { isrc: string }) => {
     <Flex
       direction="row"
       align="center"
-      p={2}
+      p="1vh"
       bg="white"
       borderRadius="lg"
       boxShadow="md"
       cursor="pointer"
-      maxW="300px"
+      maxW="80vw"
       onClick={handleAlbumClick}
     >
       {/* 앨범 이미지 */}
-      <Box position="relative">
+      <Box position="relative" mr="2vw">
         <Image
           src={track.imageUrl}
           alt={track.name}
-          boxSize="50px"
+          boxSize="8vh"
           borderRadius="full"
           objectFit="cover"
           animation={isPlaying ? `${rotate} 2s linear infinite` : undefined}
         />
       </Box>
 
-      <Box ml={3} overflow="hidden">
-        <Text fontSize="sm" fontWeight="bold" isTruncated maxW="120px">
+      <Box flex="1" overflow="hidden">
+        <Text fontSize="2.5vw" fontWeight="bold" isTruncated maxW="50vw">
           {track.name}
         </Text>
-        <Text fontSize="xs" color="gray.500" isTruncated maxW="100px">
+        <Text fontSize="2vw" color="gray.500" isTruncated maxW="45vw">
           {track.artist}
         </Text>
       </Box>
+
+      {/* 이모티콘 영역 */}
+      <Flex ml="auto" gap="1vw">
+        <IconButton
+          aria-label="Like"
+          icon={<StarIcon />}
+          boxSize="6vw"
+          colorScheme="red"
+          variant="ghost"
+          _hover={{ bg: 'red.100' }}
+          onClick={(e) => e.stopPropagation()} // Prevent triggering album click
+        />
+        <IconButton
+          aria-label="Comment"
+          icon={<ChatIcon />}
+          boxSize="6vw"
+          colorScheme="blue"
+          variant="ghost"
+          _hover={{ bg: 'blue.100' }}
+          onClick={(e) => e.stopPropagation()} // Prevent triggering album click
+        />
+      </Flex>
 
       {/* 오디오 프리뷰 */}
       <audio id={`audio-${isrc}`} style={{ display: 'none' }}>
