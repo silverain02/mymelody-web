@@ -12,7 +12,6 @@ import {
   IconButton,
 } from '@chakra-ui/react';
 import { ChatIcon, StarIcon } from '@chakra-ui/icons';
-import { Console } from 'console';
 
 interface CleanTrackInfo {
   name: string;
@@ -33,8 +32,6 @@ const TrackModule = ({ isrc }: { isrc: string }) => {
     albumName: '',
   });
   const [isPlaying, setIsPlaying] = useState(false);
-  const [isLiked, setIsLiked] = useState(false);
-  const audioRef = useRef<HTMLAudioElement | null>(null);
 
   // 노래정보 받아오기
   const { trackDetail, isLoading } = useGetTrackInfo(isrc);
@@ -54,23 +51,15 @@ const TrackModule = ({ isrc }: { isrc: string }) => {
 
   // 앨범 클릭 시 회전 및 음악 재생/정지 토글
   const handleAlbumClick = () => {
-    const audio = audioRef.current;
-    if (audio) {
-      if (isPlaying) {
-        audio.pause();
-      } else {
-        audio.play();
-        console.log('오디오 플레잉');
-      }
-      setIsPlaying(!isPlaying);
+    const audio = document.getElementById(`audio-${isrc}`) as HTMLAudioElement;
+    if (isPlaying) {
+      audio.pause();
+    } else {
+      audio.play();
+      console.log('오디오 플레잉');
     }
+    setIsPlaying(!isPlaying);
   };
-
-  // Toggle like button color
-  // const handleLikeClick = (e: React.MouseEvent) => {
-  //   e.stopPropagation(); // Prevent triggering album click
-  //   setIsLiked(!isLiked);
-  // };
 
   return (
     <Flex
@@ -106,31 +95,11 @@ const TrackModule = ({ isrc }: { isrc: string }) => {
       </Box>
 
       {/* 오디오 프리뷰 */}
-      <audio ref={audioRef} style={{ display: 'none' }}>
+      <audio id={`audio-${isrc}`} style={{ display: 'none' }}>
         <track kind="captions" />
         <source src={track.previewUrl} type="audio/mpeg" />
         Your browser does not support the audio element.
       </audio>
-
-      {/* 이모티콘 영역 */}
-      <Flex ml="auto" gap="0.8vh" direction="column" align="center">
-        <IconButton
-          aria-label="Like"
-          icon={<StarIcon />}
-          boxSize="2vw"
-          colorScheme="red"
-          color={isLiked ? 'red.500' : 'gray.400'} // Change to red when liked
-          variant="ghost"
-        />
-        <IconButton
-          aria-label="Comment"
-          icon={<ChatIcon />}
-          boxSize="2vw"
-          colorScheme="blue"
-          color={'gray.400'}
-          variant="ghost"
-        />
-      </Flex>
     </Flex>
   );
 };
