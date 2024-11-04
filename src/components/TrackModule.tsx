@@ -103,7 +103,7 @@ const TrackModule = ({ isrc }: { isrc: string }) => {
       </Box>
 
       {/* 이모티콘 영역 */}
-      <Flex ml="auto" gap="0.5vh" direction="column" align="center">
+      {/* <Flex ml="auto" gap="0.5vh" direction="column" align="center">
         <IconButton
           aria-label="Like"
           icon={<StarIcon />}
@@ -120,7 +120,7 @@ const TrackModule = ({ isrc }: { isrc: string }) => {
           color={'gray.400'}
           variant="ghost"
         />
-      </Flex>
+      </Flex> */}
 
       {/* 오디오 프리뷰 */}
       <audio ref={audioRef} style={{ display: 'none' }}>
