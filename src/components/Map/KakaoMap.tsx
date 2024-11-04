@@ -109,7 +109,7 @@ const KakaoMap = () => {
         {visibleOverlayId === id && (
           <CustomOverlayMap
             position={position}
-            yAnchor={1}
+            yAnchor={1.5}
             xAnchor={1}
             zIndex={10}
           >
