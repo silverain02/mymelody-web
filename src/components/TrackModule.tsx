@@ -61,7 +61,7 @@ const TrackModule = ({ isrc }: { isrc: string }) => {
       borderRadius="lg"
       boxShadow="md"
       cursor="pointer"
-      maxW="250px"
+      maxW="300px"
       onClick={handleAlbumClick}
     >
       {/* 앨범 이미지 */}
