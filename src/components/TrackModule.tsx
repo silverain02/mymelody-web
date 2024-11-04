@@ -111,9 +111,6 @@ const TrackModule = ({ isrc }: { isrc: string }) => {
           colorScheme="red"
           color={isLiked ? 'red.500' : 'gray.400'} // Change to red when liked
           variant="ghost"
-          onClick={() => {
-            alert('go');
-          }}
         />
         <IconButton
           aria-label="Comment"
@@ -122,9 +119,6 @@ const TrackModule = ({ isrc }: { isrc: string }) => {
           colorScheme="blue"
           color={'gray.400'}
           variant="ghost"
-          onClick={() => {
-            alert('gooo');
-          }}
         />
       </Flex>
 
