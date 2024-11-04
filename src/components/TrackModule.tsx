@@ -2,7 +2,7 @@
 
 import { useGetTrackInfo } from '@/apis/api/get/useGetTrackInfo';
 import { getCleanTrackInfo } from '@/apis/services/getCleanTrackInfo';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import {
   Image,
   Text,
@@ -33,9 +33,10 @@ const TrackModule = ({ isrc }: { isrc: string }) => {
   });
   const [isPlaying, setIsPlaying] = useState(false);
   const [isLiked, setIsLiked] = useState(false);
+  const audioRef = useRef<HTMLAudioElement | null>(null);
 
   // 노래정보 받아오기
-  const { trackDetail, isLoading, error } = useGetTrackInfo(isrc);
+  const { trackDetail, isLoading } = useGetTrackInfo(isrc);
 
   useEffect(() => {
     if (!isLoading && trackDetail) {
@@ -52,13 +53,15 @@ const TrackModule = ({ isrc }: { isrc: string }) => {
 
   // 앨범 클릭 시 회전 및 음악 재생/정지 토글
   const handleAlbumClick = () => {
-    const audio = document.getElementById(`audio-${isrc}`) as HTMLAudioElement;
-    if (isPlaying) {
-      audio.pause();
-    } else {
-      audio.play();
+    const audio = audioRef.current;
+    if (audio) {
+      if (isPlaying) {
+        audio.pause();
+      } else {
+        audio.play();
+      }
+      setIsPlaying(!isPlaying);
     }
-    setIsPlaying(!isPlaying);
   };
 
   // Toggle like button color
@@ -126,7 +129,7 @@ const TrackModule = ({ isrc }: { isrc: string }) => {
       </Flex>
 
       {/* 오디오 프리뷰 */}
-      <audio id={`audio-${isrc}`} style={{ display: 'none' }}>
+      <audio ref={audioRef} style={{ display: 'none' }}>
         <track kind="captions" />
         <source src={track.previewUrl} type="audio/mpeg" />
         Your browser does not support the audio element.
