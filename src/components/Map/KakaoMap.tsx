@@ -142,7 +142,11 @@ const KakaoMap = () => {
           />
         ))}
 
-        <MusicSelectModal isOpen={isOpen} onClose={onClose} />
+        <MusicSelectModal
+          isOpen={isOpen}
+          onClose={onClose}
+          currentLocation={currentLocation}
+        />
       </Map>
     </>
   );

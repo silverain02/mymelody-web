@@ -12,9 +12,15 @@ import {
 
 interface SelectBarProps {
   musicName: string;
+  isrcInfo: string;
+  setIsrcInfo: (isrcInfo: string) => void;
 }
 
-export const SelectBar: React.FC<SelectBarProps> = ({ musicName }) => {
+export const SelectBar: React.FC<SelectBarProps> = ({
+  musicName,
+  isrcInfo,
+  setIsrcInfo,
+}) => {
   const [cleanedTrackData, setCleanedTrackData] = useState<any[]>([]);
   const [isPlaying, setIsPlaying] = useState<number | null>(null); // 현재 재생 중인 트랙 ID
   const currentAudioRef = useRef<HTMLAudioElement | null>(null); // 현재 재생 중인 오디오 엘리먼트 추적
@@ -72,6 +78,9 @@ export const SelectBar: React.FC<SelectBarProps> = ({ musicName }) => {
   const handleCardClick = (index: number) => {
     // 카드 클릭 시 선택된 트랙을 업데이트
     setSelectedTrack(index);
+
+    // melodyInfo 업데이트 - track 데이터에서 isrc를 가져와 저장
+    setIsrcInfo(cleanedTrackData[index].isrc);
   };
 
   return (
@@ -102,7 +111,10 @@ export const SelectBar: React.FC<SelectBarProps> = ({ musicName }) => {
                 boxSize="80px"
                 borderRadius="full"
                 objectFit="cover"
-                onClick={() => handlePlayClick(index)}
+                onClick={(e) => {
+                  e.stopPropagation(); // Prevent triggering card click
+                  handlePlayClick(index);
+                }}
                 cursor="pointer"
                 // 음악이 재생 중일 때 이미지가 회전하도록 애니메이션 추가
                 animation={

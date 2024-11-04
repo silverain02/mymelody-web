@@ -4,6 +4,7 @@ interface CleanTrackInfo {
   previewUrl: string;
   imageUrl: string;
   albumName: string;
+  isrc: string;
 }
 
 export const cleanTrackData = (data: any): CleanTrackInfo[] => {
@@ -19,5 +20,6 @@ export const cleanTrackData = (data: any): CleanTrackInfo[] => {
     previewUrl: track.preview_url,
     imageUrl: track.album.images[0].url, // 앨범 이미지 중 가장 큰 이미지 선택
     albumName: track.album.name,
+    isrc: track.external_ids.isrc,
   }));
 };
