@@ -3,15 +3,7 @@
 import { useGetTrackInfo } from '@/apis/api/get/useGetTrackInfo';
 import { getCleanTrackInfo } from '@/apis/services/getCleanTrackInfo';
 import { useEffect, useRef, useState } from 'react';
-import {
-  Image,
-  Text,
-  Box,
-  Flex,
-  keyframes,
-  IconButton,
-} from '@chakra-ui/react';
-import { ChatIcon, StarIcon } from '@chakra-ui/icons';
+import { Image, Text, Box, Flex, keyframes } from '@chakra-ui/react';
 
 interface CleanTrackInfo {
   name: string;
@@ -32,6 +24,7 @@ const TrackModule = ({ isrc }: { isrc: string }) => {
     albumName: '',
   });
   const [isPlaying, setIsPlaying] = useState(false);
+  const audioRef = useRef<HTMLAudioElement | null>(null);
 
   // 노래정보 받아오기
   const { trackDetail, isLoading } = useGetTrackInfo(isrc);
@@ -50,15 +43,20 @@ const TrackModule = ({ isrc }: { isrc: string }) => {
   `;
 
   // 앨범 클릭 시 회전 및 음악 재생/정지 토글
-  const handleAlbumClick = () => {
-    const audio = document.getElementById(`audio-${isrc}`) as HTMLAudioElement;
-    if (isPlaying) {
-      audio.pause();
-    } else {
-      audio.play();
-      console.log('오디오 플레잉');
+  const handleAlbumClick = async () => {
+    if (audioRef.current) {
+      if (isPlaying) {
+        audioRef.current.pause();
+      } else {
+        try {
+          await audioRef.current.play();
+          console.log('오디오 재생 중');
+        } catch (error) {
+          console.error('오디오 재생 오류:', error);
+        }
+      }
+      setIsPlaying(!isPlaying);
     }
-    setIsPlaying(!isPlaying);
   };
 
   return (
@@ -95,7 +93,7 @@ const TrackModule = ({ isrc }: { isrc: string }) => {
       </Box>
 
       {/* 오디오 프리뷰 */}
-      <audio id={`audio-${isrc}`} style={{ display: 'none' }}>
+      <audio ref={audioRef} style={{ display: 'none' }}>
         <track kind="captions" />
         <source src={track.previewUrl} type="audio/mpeg" />
         Your browser does not support the audio element.

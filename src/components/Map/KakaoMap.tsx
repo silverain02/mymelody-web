@@ -110,7 +110,7 @@ const KakaoMap = () => {
           <CustomOverlayMap
             position={position}
             yAnchor={1.5}
-            xAnchor={1.5}
+            xAnchor={0}
             zIndex={10}
           >
             <TrackModule isrc={isrc} />
