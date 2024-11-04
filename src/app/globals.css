@@ -31,9 +31,3 @@ body {
     text-wrap: balance;
   }
 }
-
-.custom-overlay .kakao-overlaybox {
-  background: transparent !important;
-  border: none !important;
-  box-shadow: none !important;
-}

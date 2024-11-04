@@ -82,13 +82,16 @@ const TrackModule = ({ isrc }: { isrc: string }) => {
       maxW="80vw"
     >
       {/* 앨범 이미지 */}
-      <Box position="relative" mr="2vw" onClick={handleAlbumClick}>
+      <Box position="relative" mr="2vw">
         <Image
           src={track.imageUrl}
           alt={track.name}
           boxSize="6vh"
           borderRadius="full"
           objectFit="cover"
+          onClick={() => {
+            handleAlbumClick;
+          }}
           animation={isPlaying ? `${rotate} 2s linear infinite` : undefined}
         />
       </Box>
@@ -103,11 +106,11 @@ const TrackModule = ({ isrc }: { isrc: string }) => {
       </Box>
 
       {/* 이모티콘 영역 */}
-      {/* <Flex ml="auto" gap="0.5vh" direction="column" align="center">
+      <Flex ml="auto" gap="0.3vh" direction="column" align="center">
         <IconButton
           aria-label="Like"
           icon={<StarIcon />}
-          boxSize="5vw"
+          boxSize="3vw"
           colorScheme="red"
           color={isLiked ? 'red.500' : 'gray.400'} // Change to red when liked
           variant="ghost"
@@ -115,12 +118,12 @@ const TrackModule = ({ isrc }: { isrc: string }) => {
         <IconButton
           aria-label="Comment"
           icon={<ChatIcon />}
-          boxSize="5vw"
+          boxSize="3vw"
           colorScheme="blue"
           color={'gray.400'}
           variant="ghost"
         />
-      </Flex> */}
+      </Flex>
 
       {/* 오디오 프리뷰 */}
       <audio ref={audioRef} style={{ display: 'none' }}>
