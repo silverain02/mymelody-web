@@ -2,7 +2,7 @@
 
 import { useGetTrackInfo } from '@/apis/api/get/useGetTrackInfo';
 import { getCleanTrackInfo } from '@/apis/services/getCleanTrackInfo';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Image, Text, Box, Flex, keyframes } from '@chakra-ui/react';
 
 interface CleanTrackInfo {
@@ -24,10 +24,9 @@ const TrackModule = ({ isrc }: { isrc: string }) => {
     albumName: '',
   });
   const [isPlaying, setIsPlaying] = useState(false);
-  const audioRef = useRef<HTMLAudioElement | null>(null);
 
   // 노래정보 받아오기
-  const { trackDetail, isLoading } = useGetTrackInfo(isrc);
+  const { trackDetail, isLoading, error } = useGetTrackInfo(isrc);
 
   useEffect(() => {
     if (!isLoading && trackDetail) {
@@ -43,59 +42,51 @@ const TrackModule = ({ isrc }: { isrc: string }) => {
   `;
 
   // 앨범 클릭 시 회전 및 음악 재생/정지 토글
-  const handleAlbumClick = async () => {
-    console.log(`${isrc}클릭`);
-
-    if (audioRef.current) {
-      if (isPlaying) {
-        audioRef.current.pause();
-      } else {
-        try {
-          await audioRef.current.play();
-          console.log('오디오 재생 중');
-        } catch (error) {
-          console.error('오디오 재생 오류:', error);
-        }
-      }
-      setIsPlaying(!isPlaying);
+  const handleAlbumClick = () => {
+    const audio = document.getElementById(`audio-${isrc}`) as HTMLAudioElement;
+    if (isPlaying) {
+      audio.pause();
+    } else {
+      audio.play();
     }
+    setIsPlaying(!isPlaying);
   };
 
   return (
     <Flex
       direction="row"
       align="center"
-      p="1vh"
+      p={2}
       bg="white"
       borderRadius="lg"
       boxShadow="md"
       cursor="pointer"
-      maxW="80vw"
+      maxW="300px"
       onClick={handleAlbumClick}
     >
       {/* 앨범 이미지 */}
-      <Box position="relative" mr="2vw">
+      <Box position="relative">
         <Image
           src={track.imageUrl}
           alt={track.name}
-          boxSize="6vh"
+          boxSize="50px"
           borderRadius="full"
           objectFit="cover"
           animation={isPlaying ? `${rotate} 2s linear infinite` : undefined}
         />
       </Box>
 
-      <Box flex="1" overflow="hidden">
-        <Text fontSize="2.5vw" fontWeight="bold" isTruncated maxW="50vw">
+      <Box ml={3} overflow="hidden">
+        <Text fontSize="sm" fontWeight="bold" isTruncated maxW="120px">
           {track.name}
         </Text>
-        <Text fontSize="2vw" color="gray.500" isTruncated maxW="45vw">
+        <Text fontSize="xs" color="gray.500" isTruncated maxW="100px">
           {track.artist}
         </Text>
       </Box>
 
       {/* 오디오 프리뷰 */}
-      <audio ref={audioRef} style={{ display: 'none' }}>
+      <audio id={`audio-${isrc}`} style={{ display: 'none' }}>
         <track kind="captions" />
         <source src={track.previewUrl} type="audio/mpeg" />
         Your browser does not support the audio element.
