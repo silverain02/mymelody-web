@@ -7,7 +7,7 @@ import {
   useMap,
 } from 'react-kakao-maps-sdk';
 import useLocationInfo from '@/hooks/useLocationInfo';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import TrackModule from '../TrackModule';
 import { getSpotifyToken } from '@/apis/utils/getSpotifyToken';
 import usePinStore from '@/utils/store';
@@ -75,11 +75,13 @@ const KakaoMap = () => {
     id,
   }: EventMarkerContainerProps & { id: string }) => {
     const map = useMap();
+    const overlayRef = useRef<HTMLDivElement | null>(null);
 
     useEffect(() => {
       const handleOutsideClick = (event: MouseEvent) => {
         const target = event.target as HTMLElement | null; // Cast to HTMLElement
-        if (target && !target.closest('.custom-overlay')) {
+        // 클릭한 요소가 overlayRef 안에 포함되지 않은 경우에만 오버레이를 닫음
+        if (overlayRef.current && !overlayRef.current.contains(target)) {
           setVisibleOverlayId(null);
         }
       };
@@ -110,7 +112,9 @@ const KakaoMap = () => {
         />
         {visibleOverlayId === id && (
           <CustomOverlayMap position={position} yAnchor={1.5} xAnchor={0.8}>
-            <TrackModule isrc={isrc} />
+            <div ref={overlayRef} className="custom-overlay">
+              <TrackModule isrc={isrc} />
+            </div>
           </CustomOverlayMap>
         )}
       </>
