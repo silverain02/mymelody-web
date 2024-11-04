@@ -71,9 +71,10 @@ const TrackModule = ({ isrc }: { isrc: string }) => {
       boxShadow="md"
       cursor="pointer"
       maxW="80vw"
+      onClick={handleAlbumClick}
     >
       {/* 앨범 이미지 */}
-      <Box position="relative" mr="2vw" onClick={handleAlbumClick}>
+      <Box position="relative" mr="2vw">
         <Image
           src={track.imageUrl}
           alt={track.name}
