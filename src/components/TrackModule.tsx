@@ -35,9 +35,6 @@ const TrackModule = ({ isrc }: { isrc: string }) => {
     }
   }, [isLoading, trackDetail]);
 
-  if (isLoading) return <div>Loading...</div>;
-  if (error) return <div>Error loading track info.</div>;
-
   // 앨범 이미지 회전 애니메이션 정의
   const rotate = keyframes`
     from { transform: rotate(0deg); }
