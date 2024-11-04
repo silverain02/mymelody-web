@@ -62,10 +62,10 @@ const TrackModule = ({ isrc }: { isrc: string }) => {
   };
 
   // Toggle like button color
-  const handleLikeClick = (e: React.MouseEvent) => {
-    e.stopPropagation(); // Prevent triggering album click
-    setIsLiked(!isLiked);
-  };
+  // const handleLikeClick = (e: React.MouseEvent) => {
+  //   e.stopPropagation(); // Prevent triggering album click
+  //   setIsLiked(!isLiked);
+  // };
 
   return (
     <Flex
@@ -77,10 +77,9 @@ const TrackModule = ({ isrc }: { isrc: string }) => {
       boxShadow="md"
       cursor="pointer"
       maxW="80vw"
-      onClick={handleAlbumClick}
     >
       {/* 앨범 이미지 */}
-      <Box position="relative" mr="2vw">
+      <Box position="relative" mr="2vw" onClick={handleAlbumClick}>
         <Image
           src={track.imageUrl}
           alt={track.name}
@@ -101,7 +100,7 @@ const TrackModule = ({ isrc }: { isrc: string }) => {
       </Box>
 
       {/* 이모티콘 영역 */}
-      <Flex ml="auto" gap="1vh" direction="column" align="center">
+      <Flex ml="auto" gap="0.5vh" direction="column" align="center">
         <IconButton
           aria-label="Like"
           icon={<StarIcon />}
@@ -109,17 +108,20 @@ const TrackModule = ({ isrc }: { isrc: string }) => {
           colorScheme="red"
           color={isLiked ? 'red.500' : 'gray.400'} // Change to red when liked
           variant="ghost"
-          _hover={{ bg: 'red.100' }}
-          onClick={handleLikeClick}
+          onClick={() => {
+            alert('go');
+          }}
         />
         <IconButton
           aria-label="Comment"
           icon={<ChatIcon />}
           boxSize="5vw"
           colorScheme="blue"
+          color={'gray.400'}
           variant="ghost"
-          _hover={{ bg: 'blue.100' }}
-          onClick={(e) => e.stopPropagation()} // Prevent triggering album click
+          onClick={() => {
+            alert('gooo');
+          }}
         />
       </Flex>
 
