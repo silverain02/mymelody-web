@@ -7,6 +7,7 @@ import {
   ModalBody,
   ModalCloseButton,
   Button,
+  Box,
 } from '@chakra-ui/react';
 import { SearchBar } from './SearchBar';
 import { useState } from 'react';
@@ -28,21 +29,31 @@ export const MusicSelectModal: React.FC<MusicSelectModalProps> = ({
     <Modal isOpen={isOpen} onClose={onClose}>
       <ModalOverlay />
       <ModalContent
-        maxW={['90%', '80%', '500px']} // Adjust width based on screen size
-        mx="auto" // Center horizontally with margin on smaller screens
-        maxH="90vh" // Ensure the modal doesn't exceed 90% of viewport height
-        overflowY="auto" // Allow scrolling if content exceeds height
+        maxW={['90%', '80%', '500px']}
+        mx="auto"
+        maxH="90vh"
+        display="flex"
+        flexDirection="column"
       >
         <ModalHeader>멜로디 검색</ModalHeader>
         <ModalCloseButton />
-        <ModalBody>
+
+        <ModalBody flex="1" display="flex" flexDirection="column">
           <SearchBar
             musicName={musicName}
             setMusicName={setMusicName}
             isListOpen={isListOpen}
             setIsListOpen={setIsListOpen}
           />
-          {isListOpen && <SelectBar musicName={musicName}></SelectBar>}
+          {isListOpen && (
+            <Box
+              maxH="60vh"
+              overflowY="auto"
+              mt={4} /* Add margin-top for spacing */
+            >
+              <SelectBar musicName={musicName} />
+            </Box>
+          )}
         </ModalBody>
 
         <ModalFooter>
