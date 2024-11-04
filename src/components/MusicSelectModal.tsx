@@ -78,9 +78,10 @@ export const MusicSelectModal: React.FC<MusicSelectModalProps> = ({
           <Button
             colorScheme="blue"
             mr={3}
-            onClick={() =>
-              submitMusic({ isrc: isrcInfo, latlng: currentLocation })
-            }
+            onClick={() => {
+              submitMusic({ isrc: isrcInfo, latlng: currentLocation });
+              onClose(); // Close the modal after submitting
+            }}
           >
             Submit
           </Button>
