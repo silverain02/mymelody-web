@@ -32,6 +32,7 @@ const TrackModule = ({ isrc }: { isrc: string }) => {
     albumName: '',
   });
   const [isPlaying, setIsPlaying] = useState(false);
+  const [isLiked, setIsLiked] = useState(false);
 
   // 노래정보 받아오기
   const { trackDetail, isLoading, error } = useGetTrackInfo(isrc);
@@ -60,6 +61,12 @@ const TrackModule = ({ isrc }: { isrc: string }) => {
     setIsPlaying(!isPlaying);
   };
 
+  // Toggle like button color
+  const handleLikeClick = (e: React.MouseEvent) => {
+    e.stopPropagation(); // Prevent triggering album click
+    setIsLiked(!isLiked);
+  };
+
   return (
     <Flex
       direction="row"
@@ -77,7 +84,7 @@ const TrackModule = ({ isrc }: { isrc: string }) => {
         <Image
           src={track.imageUrl}
           alt={track.name}
-          boxSize="8vh"
+          boxSize="6vh"
           borderRadius="full"
           objectFit="cover"
           animation={isPlaying ? `${rotate} 2s linear infinite` : undefined}
@@ -94,20 +101,21 @@ const TrackModule = ({ isrc }: { isrc: string }) => {
       </Box>
 
       {/* 이모티콘 영역 */}
-      <Flex ml="auto" gap="1vw">
+      <Flex ml="auto" gap="1vh" direction="column" align="center">
         <IconButton
           aria-label="Like"
           icon={<StarIcon />}
-          boxSize="6vw"
+          boxSize="5vw"
           colorScheme="red"
+          color={isLiked ? 'red.500' : 'gray.400'} // Change to red when liked
           variant="ghost"
           _hover={{ bg: 'red.100' }}
-          onClick={(e) => e.stopPropagation()} // Prevent triggering album click
+          onClick={handleLikeClick}
         />
         <IconButton
           aria-label="Comment"
           icon={<ChatIcon />}
-          boxSize="6vw"
+          boxSize="5vw"
           colorScheme="blue"
           variant="ghost"
           _hover={{ bg: 'blue.100' }}
