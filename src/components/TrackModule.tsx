@@ -44,6 +44,8 @@ const TrackModule = ({ isrc }: { isrc: string }) => {
 
   // 앨범 클릭 시 회전 및 음악 재생/정지 토글
   const handleAlbumClick = async () => {
+    console.log(`${isrc}클릭`);
+
     if (audioRef.current) {
       if (isPlaying) {
         audioRef.current.pause();
