@@ -20,7 +20,7 @@ import {
   HStack,
 } from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
-import { StarIcon } from '@chakra-ui/icons'; // Chakra UI의 StarIcon 사용
+import { AddIcon, StarIcon } from '@chakra-ui/icons'; // Chakra UI의 StarIcon 사용
 
 interface TrackInfoModalProps {
   isOpen: boolean;
@@ -116,19 +116,10 @@ const TrackInfoModal: React.FC<TrackInfoModalProps> = ({
         display="flex"
         flexDirection="column"
       >
-        <ModalHeader>Track Information</ModalHeader>
+        <ModalHeader></ModalHeader>
         <ModalCloseButton />
         <ModalBody>
-          <Flex
-            direction="row"
-            align="center"
-            p={4}
-            bg="white"
-            borderRadius="lg"
-            boxShadow="md"
-            cursor="pointer"
-            maxW="100%"
-          >
+          <Flex direction="row" align="center" cursor="pointer" maxW="100%">
             <Box position="relative" onClick={handleAlbumClick}>
               <Image
                 src={track.imageUrl}
@@ -150,23 +141,17 @@ const TrackInfoModal: React.FC<TrackInfoModalProps> = ({
                 {track.artist}
               </Text>
             </Box>
+
+            {/* Like Button */}
+            <IconButton
+              icon={<StarIcon color={liked ? 'yellow.400' : 'gray.300'} />}
+              aria-label="Like"
+              onClick={handleLike}
+            />
           </Flex>
 
           {/* Social Section */}
           <Box mt={4} p={2}>
-            {/* Like Button */}
-            <HStack mb={4}>
-              <IconButton
-                icon={<StarIcon color={liked ? 'yellow.400' : 'gray.300'} />}
-                aria-label="Like"
-                onClick={handleLike}
-                variant="ghost"
-              />
-              <Text fontSize="sm">
-                {liked ? 'You liked this track' : 'Like this track'}
-              </Text>
-            </HStack>
-
             {/* Comments */}
             <VStack align="stretch" spacing={3}>
               {comments.map((comment) => (
@@ -177,25 +162,25 @@ const TrackInfoModal: React.FC<TrackInfoModalProps> = ({
                   <Text fontSize="sm" color="gray.600">
                     {comment.text}
                   </Text>
-                  <Text fontSize="xs" color="gray.400" mt={1}>
-                    {comment.createdAt}
-                  </Text>
                 </Box>
               ))}
             </VStack>
           </Box>
         </ModalBody>
 
-        <ModalFooter flexDirection="column">
+        <ModalFooter flexDirection="row">
           <Input
-            placeholder="Add a comment..."
+            placeholder="멜로디에 대한 생각을 남겨주세요"
             value={newComment}
             onChange={(e) => setNewComment(e.target.value)}
             mb={2}
           />
-          <Button colorScheme="blue" onClick={handleAddComment} width="full">
-            Post Comment
-          </Button>
+          <IconButton
+            icon={<AddIcon />}
+            aria-label="Like"
+            colorScheme="blue"
+            onClick={handleAddComment}
+          />
         </ModalFooter>
       </ModalContent>
     </Modal>
