@@ -43,7 +43,6 @@ const TrackModule = ({ isrc }: { isrc: string }) => {
 
   // 앨범 클릭 시 회전 및 음악 재생/정지 토글
   const handleAlbumClick = () => {
-    console.log('앨범클릭');
     const audio = document.getElementById(`audio-${isrc}`) as HTMLAudioElement;
     if (isPlaying) {
       audio.pause();
@@ -63,10 +62,9 @@ const TrackModule = ({ isrc }: { isrc: string }) => {
       boxShadow="md"
       cursor="pointer"
       maxW="300px"
-      onClick={handleAlbumClick}
     >
       {/* 앨범 이미지 */}
-      <Box position="relative">
+      <Box position="relative" onClick={handleAlbumClick}>
         <Image
           src={track.imageUrl}
           alt={track.name}
