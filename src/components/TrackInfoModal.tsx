@@ -110,11 +110,11 @@ const TrackInfoModal: React.FC<TrackInfoModalProps> = ({
     <Modal isOpen={isOpen} onClose={onClose}>
       <ModalOverlay />
       <ModalContent
-        maxW="400px" // Reduce modal width
+        maxW="500px" // 모달 너비를 500px로 증가
         mx="auto"
         display="flex"
         flexDirection="column"
-        p={4} // Add padding for a neat look
+        p={5} // 패딩을 5로 변경하여 여유 공간 제공
       >
         <ModalHeader
           p={0}
@@ -122,12 +122,14 @@ const TrackInfoModal: React.FC<TrackInfoModalProps> = ({
           justifyContent="space-between"
           alignItems="center"
         >
-          <Flex align="center" gap="3">
+          <Flex align="center" gap="4">
+            {' '}
+            {/* 간격을 4로 조정 */}
             <Box position="relative" onClick={handleAlbumClick}>
               <Image
                 src={track.imageUrl}
                 alt={track.name}
-                boxSize="60px" // Increase album image size
+                boxSize="70px" // 앨범 이미지 크기를 70px로 증가
                 borderRadius="full"
                 objectFit="cover"
                 animation={
@@ -136,10 +138,10 @@ const TrackInfoModal: React.FC<TrackInfoModalProps> = ({
               />
             </Box>
             <Box overflow="hidden">
-              <Text fontSize="lg" fontWeight="bold" isTruncated maxW="150px">
+              <Text fontSize="xl" fontWeight="bold" isTruncated maxW="200px">
                 {track.name}
               </Text>
-              <Text fontSize="sm" color="gray.500" isTruncated maxW="130px">
+              <Text fontSize="md" color="gray.500" isTruncated maxW="180px">
                 {track.artist}
               </Text>
             </Box>
@@ -149,19 +151,21 @@ const TrackInfoModal: React.FC<TrackInfoModalProps> = ({
             aria-label="Like"
             variant="ghost"
             onClick={handleLike}
+            _hover={{ bg: 'blue.300' }} // 호버 효과 추가
           />
         </ModalHeader>
 
         <ModalCloseButton />
 
-        <ModalBody mt={2}>
-          <VStack align="stretch" spacing={2}>
+        <ModalBody mt={4}>
+          <VStack align="stretch" spacing={3}>
+            {/* 간격을 3으로 조정 */}
             {comments.map((comment) => (
-              <Box key={comment.id} p={2} bg="gray.100" borderRadius="md">
-                <Text fontWeight="bold" fontSize="sm">
+              <Box key={comment.id} p={3} bg="gray.100" borderRadius="md">
+                <Text fontWeight="bold" fontSize="md">
                   {comment.author}
                 </Text>
-                <Text fontSize="sm" color="gray.600">
+                <Text fontSize="md" color="gray.600">
                   {comment.text}
                 </Text>
               </Box>
@@ -169,20 +173,20 @@ const TrackInfoModal: React.FC<TrackInfoModalProps> = ({
           </VStack>
         </ModalBody>
 
-        <ModalFooter p={0} mt={3}>
-          <Flex w="full" align="center" gap="2">
+        <ModalFooter p={0} mt={4}>
+          <Flex w="full" align="center" gap="3">
             <Input
               placeholder="멜로디 댓글"
               value={newComment}
               onChange={(e) => setNewComment(e.target.value)}
-              height="40px" // Match height with button
+              height="50px" // 버튼과 높이 일치
             />
             <IconButton
               icon={<AddIcon />}
               aria-label="Add Comment"
               colorScheme="blue"
               onClick={handleAddComment}
-              height="40px" // Match height with input
+              height="50px" // 인풋과 높이 일치
             />
           </Flex>
         </ModalFooter>
