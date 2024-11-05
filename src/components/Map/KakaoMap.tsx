@@ -40,7 +40,7 @@ const KakaoMap = () => {
     onOpen: onTrackInfoOpen,
     onClose: onTrackInfoClose,
   } = useDisclosure();
-  const [selectedIsrc, setSelectedIsrc] = useState<string | null>(null);
+  const [selectedIsrc, setSelectedIsrc] = useState('');
   const handleTrackClick = (isrc: string) => {
     setSelectedIsrc(isrc);
     onTrackInfoOpen();
