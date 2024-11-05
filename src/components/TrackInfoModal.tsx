@@ -119,7 +119,14 @@ const TrackInfoModal: React.FC<TrackInfoModalProps> = ({
         <ModalHeader></ModalHeader>
         <ModalCloseButton />
         <ModalBody>
-          <Flex direction="row" align="center" cursor="pointer" maxW="100%">
+          <Flex
+            minWidth="max-content"
+            direction="row"
+            align="space-between"
+            cursor="pointer"
+            maxW="100%"
+            gap="2"
+          >
             <Box position="relative" onClick={handleAlbumClick}>
               <Image
                 src={track.imageUrl}
@@ -146,6 +153,7 @@ const TrackInfoModal: React.FC<TrackInfoModalProps> = ({
             <IconButton
               icon={<StarIcon color={liked ? 'yellow.400' : 'gray.300'} />}
               aria-label="Like"
+              variant="ghost"
               onClick={handleLike}
             />
           </Flex>
@@ -169,18 +177,27 @@ const TrackInfoModal: React.FC<TrackInfoModalProps> = ({
         </ModalBody>
 
         <ModalFooter flexDirection="row">
-          <Input
-            placeholder="멜로디에 대한 생각을 남겨주세요"
-            value={newComment}
-            onChange={(e) => setNewComment(e.target.value)}
-            mb={2}
-          />
-          <IconButton
-            icon={<AddIcon />}
-            aria-label="Like"
-            colorScheme="blue"
-            onClick={handleAddComment}
-          />
+          <Flex
+            minWidth="max-content"
+            direction="row"
+            align="space-between"
+            cursor="pointer"
+            maxW="100%"
+            gap="2"
+          >
+            <Input
+              placeholder="멜로디 댓글"
+              value={newComment}
+              onChange={(e) => setNewComment(e.target.value)}
+              mb={2}
+            />
+            <IconButton
+              icon={<AddIcon />}
+              aria-label="Like"
+              colorScheme="blue"
+              onClick={handleAddComment}
+            />
+          </Flex>
         </ModalFooter>
       </ModalContent>
     </Modal>
