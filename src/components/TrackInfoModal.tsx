@@ -116,12 +116,10 @@ const TrackInfoModal: React.FC<TrackInfoModalProps> = ({
         flexDirection="column"
         p="2vh" // 패딩을 viewport 높이로 설정하여 여유 공간 제공
       >
-        <ModalHeader></ModalHeader>
         <ModalCloseButton />
 
         <ModalBody mt="2vh">
-          <Flex align="center" gap="2vw">
-            {/* 간격을 viewport 너비로 조정 */}
+          <Flex align="center" gap="2vw" justify="space-evenly">
             <Box position="relative" onClick={handleAlbumClick}>
               <Image
                 src={track.imageUrl}
@@ -150,7 +148,6 @@ const TrackInfoModal: React.FC<TrackInfoModalProps> = ({
             />
           </Flex>
           <VStack align="stretch" spacing="1.5vh">
-            {/* 간격을 viewport 높이로 조정 */}
             {comments.map((comment) => (
               <Box key={comment.id} p="1.5vh" bg="gray.100" borderRadius="md">
                 <Text fontWeight="bold" fontSize="1.5vh">
@@ -170,14 +167,14 @@ const TrackInfoModal: React.FC<TrackInfoModalProps> = ({
               placeholder="멜로디 댓글"
               value={newComment}
               onChange={(e) => setNewComment(e.target.value)}
-              height="6vh" // 버튼과 높이 일치
+              height="5vh"
             />
             <IconButton
               icon={<AddIcon />}
               aria-label="Add Comment"
               colorScheme="blue"
               onClick={handleAddComment}
-              height="6vh" // 인풋과 높이 일치
+              height="5vh"
             />
           </Flex>
         </ModalFooter>
