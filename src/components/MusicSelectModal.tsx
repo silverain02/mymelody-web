@@ -8,7 +8,6 @@ import {
   ModalCloseButton,
   Button,
   Box,
-  usePinInput,
 } from '@chakra-ui/react';
 import { SearchBar } from './SearchBar';
 import { useState } from 'react';

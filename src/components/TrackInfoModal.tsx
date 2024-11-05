@@ -110,26 +110,23 @@ const TrackInfoModal: React.FC<TrackInfoModalProps> = ({
     <Modal isOpen={isOpen} onClose={onClose}>
       <ModalOverlay />
       <ModalContent
-        maxW="500px" // 모달 너비를 500px로 증가
+        maxW={['80vw', '50vw']} // 모달 너비를 viewport 너비로 설정
         mx="auto"
         display="flex"
         flexDirection="column"
-        p={5} // 패딩을 5로 변경하여 여유 공간 제공
+        p="2vh" // 패딩을 viewport 높이로 설정하여 여유 공간 제공
       >
-        <ModalHeader
-          p={0}
-          display="flex"
-          justifyContent="space-between"
-          alignItems="center"
-        >
-          <Flex align="center" gap="4">
-            {' '}
-            {/* 간격을 4로 조정 */}
+        <ModalHeader></ModalHeader>
+        <ModalCloseButton />
+
+        <ModalBody mt="2vh">
+          <Flex align="center" gap="2vw">
+            {/* 간격을 viewport 너비로 조정 */}
             <Box position="relative" onClick={handleAlbumClick}>
               <Image
                 src={track.imageUrl}
                 alt={track.name}
-                boxSize="70px" // 앨범 이미지 크기를 70px로 증가
+                boxSize="8vh" // 앨범 이미지 크기를 viewport 높이로 설정
                 borderRadius="full"
                 objectFit="cover"
                 animation={
@@ -138,34 +135,28 @@ const TrackInfoModal: React.FC<TrackInfoModalProps> = ({
               />
             </Box>
             <Box overflow="hidden">
-              <Text fontSize="xl" fontWeight="bold" isTruncated maxW="200px">
+              <Text fontSize="2vh" fontWeight="bold" isTruncated maxW="20vw">
                 {track.name}
               </Text>
-              <Text fontSize="md" color="gray.500" isTruncated maxW="180px">
+              <Text fontSize="1.5vh" color="gray.500" isTruncated maxW="18vw">
                 {track.artist}
               </Text>
             </Box>
+            <IconButton
+              icon={<StarIcon color={liked ? 'yellow.400' : 'gray.300'} />}
+              aria-label="Like"
+              variant="ghost"
+              onClick={handleLike}
+            />
           </Flex>
-          <IconButton
-            icon={<StarIcon color={liked ? 'yellow.400' : 'gray.300'} />}
-            aria-label="Like"
-            variant="ghost"
-            onClick={handleLike}
-            _hover={{ bg: 'blue.300' }} // 호버 효과 추가
-          />
-        </ModalHeader>
-
-        <ModalCloseButton />
-
-        <ModalBody mt={4}>
-          <VStack align="stretch" spacing={3}>
-            {/* 간격을 3으로 조정 */}
+          <VStack align="stretch" spacing="1.5vh">
+            {/* 간격을 viewport 높이로 조정 */}
             {comments.map((comment) => (
-              <Box key={comment.id} p={3} bg="gray.100" borderRadius="md">
-                <Text fontWeight="bold" fontSize="md">
+              <Box key={comment.id} p="1.5vh" bg="gray.100" borderRadius="md">
+                <Text fontWeight="bold" fontSize="1.5vh">
                   {comment.author}
                 </Text>
-                <Text fontSize="md" color="gray.600">
+                <Text fontSize="1.5vh" color="gray.600">
                   {comment.text}
                 </Text>
               </Box>
@@ -173,20 +164,20 @@ const TrackInfoModal: React.FC<TrackInfoModalProps> = ({
           </VStack>
         </ModalBody>
 
-        <ModalFooter p={0} mt={4}>
-          <Flex w="full" align="center" gap="3">
+        <ModalFooter p={0} mt="2vh">
+          <Flex w="full" align="center" gap="1.5vw">
             <Input
               placeholder="멜로디 댓글"
               value={newComment}
               onChange={(e) => setNewComment(e.target.value)}
-              height="50px" // 버튼과 높이 일치
+              height="6vh" // 버튼과 높이 일치
             />
             <IconButton
               icon={<AddIcon />}
               aria-label="Add Comment"
               colorScheme="blue"
               onClick={handleAddComment}
-              height="50px" // 인풋과 높이 일치
+              height="6vh" // 인풋과 높이 일치
             />
           </Flex>
         </ModalFooter>
