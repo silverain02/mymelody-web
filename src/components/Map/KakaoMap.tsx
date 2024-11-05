@@ -14,6 +14,7 @@ import usePinStore from '@/utils/store';
 import { getDistance } from '@/utils/distance';
 import { MusicSelectModal } from '../MusicSelectModal';
 import { useDisclosure } from '@chakra-ui/react';
+import TrackInfoModal from '../TrackInfoModal';
 
 interface EventMarkerContainerProps {
   position: {
@@ -28,6 +29,22 @@ const KakaoMap = () => {
     useLocationInfo();
   const [currentLocation, setCurrentLocation] = useState(locationInfo);
   const pinList = usePinStore((state) => state.pinList);
+
+  const {
+    isOpen: isMusicModalOpen,
+    onOpen: onMusicModalOpen,
+    onClose: onMusicModalClose,
+  } = useDisclosure();
+  const {
+    isOpen: isTrackInfoOpen,
+    onOpen: onTrackInfoOpen,
+    onClose: onTrackInfoClose,
+  } = useDisclosure();
+  const [selectedIsrc, setSelectedIsrc] = useState<string | null>(null);
+  const handleTrackClick = (isrc: string) => {
+    setSelectedIsrc(isrc);
+    onTrackInfoOpen();
+  };
 
   useEffect(() => {
     getSpotifyToken();
@@ -62,8 +79,6 @@ const KakaoMap = () => {
   const [loading, error] = useKakaoLoader({
     appkey: process.env.NEXT_PUBLIC_KAKAO_APP_KEY_JS || '',
   });
-
-  const { isOpen, onOpen, onClose } = useDisclosure();
 
   // Track currently visible overlay
   const [visibleOverlayId, setVisibleOverlayId] = useState<string | null>(null);
@@ -105,7 +120,6 @@ const KakaoMap = () => {
           }}
           clickable={true}
           onClick={(marker) => {
-            console.log('마커클릭');
             setVisibleOverlayId(visibleOverlayId === id ? null : id);
             map.panTo(marker.getPosition());
           }}
@@ -118,7 +132,7 @@ const KakaoMap = () => {
             zIndex={10}
           >
             <div ref={overlayRef} className="custom-overlay">
-              <TrackModule isrc={isrc} />
+              <TrackModule isrc={isrc} onTrackClick={handleTrackClick} />
             </div>
           </CustomOverlayMap>
         )}
@@ -133,7 +147,7 @@ const KakaoMap = () => {
         style={{ width: '100vw', height: '100vh' }}
         level={3}
       >
-        <MapMarker position={currentLocation} onClick={onOpen} />
+        <MapMarker position={currentLocation} onClick={onMusicModalOpen} />
 
         {pinList.map((value) => (
           <EventMarkerContainer
@@ -145,9 +159,14 @@ const KakaoMap = () => {
         ))}
 
         <MusicSelectModal
-          isOpen={isOpen}
-          onClose={onClose}
+          isOpen={isMusicModalOpen}
+          onClose={onMusicModalClose}
           currentLocation={currentLocation}
+        />
+        <TrackInfoModal
+          isOpen={isTrackInfoOpen}
+          onClose={onTrackInfoClose}
+          isrc={selectedIsrc}
         />
       </Map>
     </>

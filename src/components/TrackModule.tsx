@@ -14,7 +14,12 @@ interface CleanTrackInfo {
   albumName: string;
 }
 
-const TrackModule = ({ isrc }: { isrc: string }) => {
+interface TrackModuleProps {
+  isrc: string;
+  onTrackClick: (isrc: string) => void;
+}
+
+const TrackModule: React.FC<TrackModuleProps> = ({ isrc, onTrackClick }) => {
   const [track, setTrack] = useState<CleanTrackInfo>({
     name: '',
     artist: '',
@@ -75,7 +80,7 @@ const TrackModule = ({ isrc }: { isrc: string }) => {
         />
       </Box>
 
-      <Box ml={3} overflow="hidden">
+      <Box ml={3} overflow="hidden" onClick={() => onTrackClick(isrc)}>
         <Text fontSize="sm" fontWeight="bold" isTruncated maxW="120px">
           {track.name}
         </Text>
