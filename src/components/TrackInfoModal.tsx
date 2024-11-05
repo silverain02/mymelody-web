@@ -122,7 +122,8 @@ const TrackInfoModal: React.FC<TrackInfoModalProps> = ({
           <Flex
             minWidth="max-content"
             direction="row"
-            align="space-between"
+            align="center"
+            justify="space-between"
             cursor="pointer"
             maxW="100%"
             gap="2"
@@ -158,7 +159,6 @@ const TrackInfoModal: React.FC<TrackInfoModalProps> = ({
             />
           </Flex>
 
-          {/* Social Section */}
           <Box mt={4} p={2}>
             {/* Comments */}
             <VStack align="stretch" spacing={3}>
@@ -174,13 +174,20 @@ const TrackInfoModal: React.FC<TrackInfoModalProps> = ({
               ))}
             </VStack>
           </Box>
+          {/* Audio element */}
+          <audio id={`audio-${isrc}`} style={{ display: 'none' }}>
+            <track kind="captions" />
+            <source src={track.previewUrl} type="audio/mpeg" />
+            Your browser does not support the audio element.
+          </audio>
         </ModalBody>
 
         <ModalFooter flexDirection="row">
           <Flex
             minWidth="max-content"
             direction="row"
-            align="space-between"
+            align="center"
+            justify="space-between"
             cursor="pointer"
             maxW="100%"
             gap="2"
