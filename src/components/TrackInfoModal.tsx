@@ -1,4 +1,3 @@
-// TrackInfoModal.tsx
 import { useGetTrackInfo } from '@/apis/api/get/useGetTrackInfo';
 import { getCleanTrackInfo } from '@/apis/services/getCleanTrackInfo';
 import {
@@ -15,8 +14,13 @@ import {
   Flex,
   Text,
   Image,
+  Input,
+  IconButton,
+  VStack,
+  HStack,
 } from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
+import { StarIcon } from '@chakra-ui/icons'; // Chakra UI의 StarIcon 사용
 
 interface TrackInfoModalProps {
   isOpen: boolean;
@@ -33,6 +37,13 @@ interface CleanTrackInfo {
   albumName: string;
 }
 
+interface Comment {
+  id: number;
+  text: string;
+  author: string;
+  createdAt: string;
+}
+
 const TrackInfoModal: React.FC<TrackInfoModalProps> = ({
   isOpen,
   onClose,
@@ -47,16 +58,18 @@ const TrackInfoModal: React.FC<TrackInfoModalProps> = ({
     albumName: '',
   });
   const [isPlaying, setIsPlaying] = useState(false);
+  const [liked, setLiked] = useState(false);
+  const [comments, setComments] = useState<Comment[]>([]);
+  const [newComment, setNewComment] = useState('');
 
-  // 노래정보 받아오기
-  const { trackDetail, isLoading, error } = useGetTrackInfo(isrc);
+  const { trackDetail, isLoading } = useGetTrackInfo(isrc);
 
-  // 앨범 이미지 회전 애니메이션 정의
+  // Rotate animation
   const rotate = keyframes`
     from { transform: rotate(0deg); }
     to { transform: rotate(360deg); }
   `;
-  // 앨범 클릭 시 회전 및 음악 재생/정지 토글
+
   const handleAlbumClick = () => {
     const audio = document.getElementById(`audio-${isrc}`) as HTMLAudioElement;
     if (isPlaying) {
@@ -74,6 +87,25 @@ const TrackInfoModal: React.FC<TrackInfoModalProps> = ({
     }
   }, [isLoading, trackDetail]);
 
+  const handleLike = () => {
+    setLiked(!liked);
+  };
+
+  const handleAddComment = () => {
+    if (newComment.trim() !== '') {
+      setComments((prevComments) => [
+        ...prevComments,
+        {
+          id: prevComments.length + 1,
+          text: newComment,
+          author: 'User', // Replace with actual user data
+          createdAt: new Date().toLocaleString(),
+        },
+      ]);
+      setNewComment('');
+    }
+  };
+
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
       <ModalOverlay />
@@ -84,7 +116,7 @@ const TrackInfoModal: React.FC<TrackInfoModalProps> = ({
         display="flex"
         flexDirection="column"
       >
-        <ModalHeader>{isrc}</ModalHeader>
+        <ModalHeader>Track Information</ModalHeader>
         <ModalCloseButton />
         <ModalBody>
           <Flex
@@ -97,7 +129,6 @@ const TrackInfoModal: React.FC<TrackInfoModalProps> = ({
             cursor="pointer"
             maxW="100%"
           >
-            {/* 앨범 이미지 */}
             <Box position="relative" onClick={handleAlbumClick}>
               <Image
                 src={track.imageUrl}
@@ -105,7 +136,9 @@ const TrackInfoModal: React.FC<TrackInfoModalProps> = ({
                 boxSize="50px"
                 borderRadius="full"
                 objectFit="cover"
-                animation={isPlaying ? `rotate 2s linear infinite` : undefined}
+                animation={
+                  isPlaying ? `${rotate} 2s linear infinite` : undefined
+                }
               />
             </Box>
 
@@ -117,16 +150,53 @@ const TrackInfoModal: React.FC<TrackInfoModalProps> = ({
                 {track.artist}
               </Text>
             </Box>
-
-            {/* 오디오 프리뷰 */}
-            <audio id={`audio-${isrc}`} style={{ display: 'none' }}>
-              <track kind="captions" />
-              <source src={track.previewUrl} type="audio/mpeg" />
-              Your browser does not support the audio element.
-            </audio>
           </Flex>
+
+          {/* Social Section */}
+          <Box mt={4} p={2}>
+            {/* Like Button */}
+            <HStack mb={4}>
+              <IconButton
+                icon={<StarIcon color={liked ? 'yellow.400' : 'gray.300'} />}
+                aria-label="Like"
+                onClick={handleLike}
+                variant="ghost"
+              />
+              <Text fontSize="sm">
+                {liked ? 'You liked this track' : 'Like this track'}
+              </Text>
+            </HStack>
+
+            {/* Comments */}
+            <VStack align="stretch" spacing={3}>
+              {comments.map((comment) => (
+                <Box key={comment.id} p={2} bg="gray.100" borderRadius="md">
+                  <Text fontWeight="bold" fontSize="sm">
+                    {comment.author}
+                  </Text>
+                  <Text fontSize="sm" color="gray.600">
+                    {comment.text}
+                  </Text>
+                  <Text fontSize="xs" color="gray.400" mt={1}>
+                    {comment.createdAt}
+                  </Text>
+                </Box>
+              ))}
+            </VStack>
+          </Box>
         </ModalBody>
-        <ModalFooter></ModalFooter>
+
+        <ModalFooter flexDirection="column">
+          <Input
+            placeholder="Add a comment..."
+            value={newComment}
+            onChange={(e) => setNewComment(e.target.value)}
+            mb={2}
+          />
+          <Button colorScheme="blue" onClick={handleAddComment} width="full">
+            Post Comment
+          </Button>
+        </ModalFooter>
       </ModalContent>
     </Modal>
   );
