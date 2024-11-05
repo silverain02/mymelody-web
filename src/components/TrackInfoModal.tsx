@@ -110,29 +110,24 @@ const TrackInfoModal: React.FC<TrackInfoModalProps> = ({
     <Modal isOpen={isOpen} onClose={onClose}>
       <ModalOverlay />
       <ModalContent
-        maxW={['90%', '80%', '500px']}
+        maxW="400px" // Reduce modal width
         mx="auto"
-        maxH="90vh"
         display="flex"
         flexDirection="column"
+        p={4} // Add padding for a neat look
       >
-        <ModalHeader></ModalHeader>
-        <ModalCloseButton />
-        <ModalBody>
-          <Flex
-            minWidth="max-content"
-            direction="row"
-            align="center"
-            justify="space-between"
-            cursor="pointer"
-            maxW="100%"
-            gap="2"
-          >
+        <ModalHeader
+          p={0}
+          display="flex"
+          justifyContent="space-between"
+          alignItems="center"
+        >
+          <Flex align="center" gap="3">
             <Box position="relative" onClick={handleAlbumClick}>
               <Image
                 src={track.imageUrl}
                 alt={track.name}
-                boxSize="50px"
+                boxSize="60px" // Increase album image size
                 borderRadius="full"
                 objectFit="cover"
                 animation={
@@ -140,69 +135,54 @@ const TrackInfoModal: React.FC<TrackInfoModalProps> = ({
                 }
               />
             </Box>
-
-            <Box ml={3} overflow="hidden">
-              <Text fontSize="md" fontWeight="bold" isTruncated maxW="120px">
+            <Box overflow="hidden">
+              <Text fontSize="lg" fontWeight="bold" isTruncated maxW="150px">
                 {track.name}
               </Text>
-              <Text fontSize="sm" color="gray.500" isTruncated maxW="100px">
+              <Text fontSize="sm" color="gray.500" isTruncated maxW="130px">
                 {track.artist}
               </Text>
             </Box>
-
-            {/* Like Button */}
-            <IconButton
-              icon={<StarIcon color={liked ? 'yellow.400' : 'gray.300'} />}
-              aria-label="Like"
-              variant="ghost"
-              onClick={handleLike}
-            />
           </Flex>
+          <IconButton
+            icon={<StarIcon color={liked ? 'yellow.400' : 'gray.300'} />}
+            aria-label="Like"
+            variant="ghost"
+            onClick={handleLike}
+          />
+        </ModalHeader>
 
-          <Box mt={4} p={2}>
-            {/* Comments */}
-            <VStack align="stretch" spacing={3}>
-              {comments.map((comment) => (
-                <Box key={comment.id} p={2} bg="gray.100" borderRadius="md">
-                  <Text fontWeight="bold" fontSize="sm">
-                    {comment.author}
-                  </Text>
-                  <Text fontSize="sm" color="gray.600">
-                    {comment.text}
-                  </Text>
-                </Box>
-              ))}
-            </VStack>
-          </Box>
-          {/* Audio element */}
-          <audio id={`audio-${isrc}`} style={{ display: 'none' }}>
-            <track kind="captions" />
-            <source src={track.previewUrl} type="audio/mpeg" />
-            Your browser does not support the audio element.
-          </audio>
+        <ModalCloseButton />
+
+        <ModalBody mt={2}>
+          <VStack align="stretch" spacing={2}>
+            {comments.map((comment) => (
+              <Box key={comment.id} p={2} bg="gray.100" borderRadius="md">
+                <Text fontWeight="bold" fontSize="sm">
+                  {comment.author}
+                </Text>
+                <Text fontSize="sm" color="gray.600">
+                  {comment.text}
+                </Text>
+              </Box>
+            ))}
+          </VStack>
         </ModalBody>
 
-        <ModalFooter flexDirection="row">
-          <Flex
-            minWidth="max-content"
-            direction="row"
-            align="center"
-            justify="space-between"
-            cursor="pointer"
-            maxW="100%"
-            gap="2"
-          >
+        <ModalFooter p={0} mt={3}>
+          <Flex w="full" align="center" gap="2">
             <Input
               placeholder="멜로디 댓글"
               value={newComment}
               onChange={(e) => setNewComment(e.target.value)}
-              mb={2}
+              height="40px" // Match height with button
             />
             <IconButton
               icon={<AddIcon />}
-              aria-label="Like"
+              aria-label="Add Comment"
               colorScheme="blue"
               onClick={handleAddComment}
+              height="40px" // Match height with input
             />
           </Flex>
         </ModalFooter>
