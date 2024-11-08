@@ -14,14 +14,15 @@ export default function Page() {
   const { userAccessToken, userRefreshToken, isLoading, error } =
     useGetUserToken(code);
 
-  //userToken 전역변수 저장
+  console.log(userAccessToken);
 
+  //userToken 전역변수 저장
   const { userToken, setUserToken } = useUserTokenStore();
 
   useEffect(() => {
     if (userAccessToken) {
       setUserToken(userAccessToken, userRefreshToken);
-      console.log(userToken?.accessToken);
+      // console.log(userToken?.accessToken);
     }
 
     if (error) {
