@@ -4,6 +4,7 @@ import { Inter } from 'next/font/google';
 import './globals.css';
 import { ColorModeScript } from '@chakra-ui/react';
 import TanstackProvider from '../../providers/TanstackProvider';
+import { Suspense } from 'react';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -39,7 +40,9 @@ export default function RootLayout({
       <body className={inter.className}>
         <TanstackProvider>
           <ColorModeScript />
-          <div>{children}</div>
+          <Suspense>
+            <div>{children}</div>
+          </Suspense>
         </TanstackProvider>
       </body>
     </html>
