@@ -13,8 +13,7 @@ export const useGetUserToken = (code: string | null) => {
   });
 
   return {
-    userAccessToken: data.accessToken,
-    userRefreshToken: data.refreshToken,
+    userTokenObj: data,
     isLoading,
     error,
   };
