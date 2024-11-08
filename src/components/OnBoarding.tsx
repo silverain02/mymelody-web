@@ -1,6 +1,6 @@
 'use client';
 import { Box, Button, Image, Text, Center } from '@chakra-ui/react';
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/navigation';
 
 export const OnBoarding = () => {
   const router = useRouter();
