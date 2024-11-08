@@ -1,7 +1,9 @@
 'use client';
 import { Box, Button, Image, Text, Center } from '@chakra-ui/react';
+import { useRouter } from 'next/router';
 
 export const OnBoarding = () => {
+  const router = useRouter();
   return (
     <Box
       height="100vh"
@@ -31,7 +33,7 @@ export const OnBoarding = () => {
           colorScheme="pink"
           size="lg"
           onClick={() => {
-            console.log('로그인');
+            router.push('/login');
           }}
         >
           로그인
