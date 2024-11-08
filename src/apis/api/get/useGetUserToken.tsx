@@ -7,6 +7,7 @@ export const useGetUserToken = (code: string | null) => {
     queryKey: ['userToken'],
     queryFn: async () => {
       const res = await baseInstance.get(`auth/login?code=${code}`);
+      console.log(res.data);
       return res.data;
     },
   });

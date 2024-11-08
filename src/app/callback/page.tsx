@@ -10,6 +10,8 @@ export default function Page() {
   const searchParams = useSearchParams();
   const code = searchParams.get('code');
 
+  console.log(code);
+
   //userToken 받아오기
   const { userAccessToken, userRefreshToken, isLoading, error } =
     useGetUserToken(code);
@@ -30,5 +32,11 @@ export default function Page() {
     }
   }, [userAccessToken, error]);
 
-  return <></>;
+  return (
+    <>
+      <div>{code}</div>
+      <div>{userAccessToken}</div>
+      <div>{userToken?.accessToken}</div>
+    </>
+  );
 }
