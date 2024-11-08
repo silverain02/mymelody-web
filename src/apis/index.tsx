@@ -24,7 +24,7 @@ const authAPI = (
   });
 };
 
-export const baseInstance = baseAPI(process.env.REACT_APP_BASE_URL as string);
+export const baseInstance = baseAPI(process.env.NEXT_PUBLIC_BE_URL as string);
 export const spotifyApiInstance = authAPI(
   'https://api.spotify.com/v1/',
   'spotifyAccessToken'
