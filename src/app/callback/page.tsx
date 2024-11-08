@@ -21,7 +21,7 @@ export default function Page() {
   useEffect(() => {
     if (userAccessToken) {
       setUserToken(userAccessToken, userRefreshToken);
-      console.log(userToken);
+      console.log(userToken?.accessToken);
     }
 
     if (error) {
