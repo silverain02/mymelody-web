@@ -1,12 +1,11 @@
 /* eslint-disable react/function-component-definition */
-import { OnBoarding } from '@/components/OnBoarding';
+import KakaoMap from '@/components/Map/KakaoMap';
 import { ChakraProvider } from '@chakra-ui/react';
-
 export default function Page() {
   return (
     <>
       <ChakraProvider>
-        <OnBoarding />
+        <KakaoMap />
       </ChakraProvider>
     </>
   );
