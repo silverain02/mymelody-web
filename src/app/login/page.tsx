@@ -1,9 +1,9 @@
-import type { NextApiRequest, NextApiResponse } from 'next';
 import qs from 'querystring';
 import { BASE_URL, SPOTIFY_AUTHORIZE_URL } from '@/constants/url';
+import { redirect } from 'next/navigation';
 
-export default function page(req: NextApiRequest, res: NextApiResponse) {
-  res.redirect(
+export default function page() {
+  redirect(
     SPOTIFY_AUTHORIZE_URL +
       '?' +
       qs.stringify({
