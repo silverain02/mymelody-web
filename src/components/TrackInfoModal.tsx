@@ -119,7 +119,7 @@ const TrackInfoModal: React.FC<TrackInfoModalProps> = ({
         <ModalCloseButton />
 
         <ModalBody mt="2vh">
-          <Flex align="center" gap="2vw" justify="space-evenly">
+          <Flex align="center" gap="2vw" justify="space-evenly" w="full">
             <Box position="relative" onClick={handleAlbumClick}>
               <Image
                 src={track.imageUrl}
@@ -132,7 +132,7 @@ const TrackInfoModal: React.FC<TrackInfoModalProps> = ({
                 }
               />
             </Box>
-            <Box overflow="hidden">
+            <Box overflow="hidden" w="50%">
               <Text fontSize="2vh" fontWeight="bold" isTruncated maxW="20vw">
                 {track.name}
               </Text>
@@ -147,7 +147,7 @@ const TrackInfoModal: React.FC<TrackInfoModalProps> = ({
               onClick={handleLike}
             />
           </Flex>
-          <VStack align="stretch" spacing="1.5vh">
+          <VStack align="stretch" spacing="1.5vh" w="full">
             {comments.map((comment) => (
               <Box key={comment.id} p="1.5vh" bg="gray.100" borderRadius="md">
                 <Text fontWeight="bold" fontSize="1.5vh">
