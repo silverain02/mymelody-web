@@ -1,12 +1,17 @@
 import { useMutation } from 'react-query';
-import { BeApiInstance } from '@/apis';
-
+import { authBeAPI } from '@/apis';
+import useUserTokenStore from '@/states/useUserTokenStore';
 // code로 user Token받기
 export const usePostLogout = () => {
-  const { data, isLoading, error, isSuccess } = useMutation({
+  const { userToken } = useUserTokenStore();
+  const authBeInstance = authBeAPI(
+    process.env.NEXT_PUBLIC_BE_URL as string,
+    userToken?.accessToken || ''
+  );
+  const { isLoading, error, isSuccess } = useMutation({
     mutationKey: ['logout'],
     mutationFn: async () => {
-      await BeApiInstance.post(`auth/logout`);
+      await authBeInstance.post(`auth/logout`);
     },
   });
 

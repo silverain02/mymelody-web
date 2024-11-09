@@ -9,15 +9,15 @@ const baseAPI = (
 };
 
 // auth BE
-const AuthBEAPI = (
+export const authBeAPI = (
   url: string,
+  token: string,
   options: AxiosRequestConfig = {}
 ): AxiosInstance => {
-  const { userToken, setUserToken } = useUserTokenStore();
   return axios.create({
     baseURL: url,
     headers: {
-      Authorization: userToken ? `Bearer ${userToken.accessToken}` : undefined, // 토큰이 있을 경우에만 추가
+      Authorization: `Bearer ${token}`,
     },
     ...options,
   });
@@ -44,7 +44,4 @@ export const baseInstance = baseAPI(process.env.NEXT_PUBLIC_BE_URL as string);
 export const spotifyApiInstance = authAPI(
   'https://api.spotify.com/v1/',
   'spotifyAccessToken'
-);
-export const BeApiInstance = AuthBEAPI(
-  process.env.NEXT_PUBLIC_BE_URL as string
 );
