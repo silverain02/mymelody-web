@@ -133,10 +133,10 @@ const TrackInfoModal: React.FC<TrackInfoModalProps> = ({
               />
             </Box>
             <Box overflow="hidden" w="50%">
-              <Text fontSize="2vh" fontWeight="bold" isTruncated maxW="20vw">
+              <Text fontSize="2vh" fontWeight="bold" isTruncated maxW="100%">
                 {track.name}
               </Text>
-              <Text fontSize="1.5vh" color="gray.500" isTruncated maxW="18vw">
+              <Text fontSize="1.5vh" color="gray.500" isTruncated maxW="100%">
                 {track.artist}
               </Text>
             </Box>
