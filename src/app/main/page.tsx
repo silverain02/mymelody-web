@@ -1,7 +1,7 @@
 /* eslint-disable react/function-component-definition */
 import KakaoMap from '@/components/Map/KakaoMap';
 import { ChakraProvider } from '@chakra-ui/react';
-import { Box, Center, Flex, Button } from '@chakra-ui/react';
+import { Box, Center, Flex, Select } from '@chakra-ui/react';
 export default function Page() {
   return (
     <>
@@ -11,27 +11,25 @@ export default function Page() {
           {/* 필터링 선택 바 */}
           <Center
             className="absolute top-5 left-1/2 transform -translate-x-1/2"
+            top="5vh"
             zIndex="10"
           >
-            <Box
-              bg="whiteAlpha.800"
-              p="4"
-              borderRadius="lg"
-              shadow="md"
-              className="w-full max-w-md"
+            <Select
+              defaultValue="all"
+              size="sm"
+              bg="whiteAlpha.800" // 투명하게 설정
+              color="black"
+              borderRadius="md"
+              shadow="sm"
+              maxWidth="400px"
+              width="50vw" // 원하는 크기로 설정
+              _hover={{ bg: 'whiteAlpha.900' }}
             >
-              <Flex justifyContent="space-between" alignItems="center">
-                <Button colorScheme="blue" size="sm">
-                  필터 1
-                </Button>
-                <Button colorScheme="green" size="sm">
-                  필터 2
-                </Button>
-                <Button colorScheme="red" size="sm">
-                  필터 3
-                </Button>
-              </Flex>
-            </Box>
+              <option value="all">모든 멜로디</option>
+              <option value="created">내가 생성한 멜로디</option>
+              <option value="liked">내가 좋아한 멜로디</option>
+              <option value="reacted">내가 반응한 멜로디</option>
+            </Select>
           </Center>
         </Box>
       </ChakraProvider>

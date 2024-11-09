@@ -112,10 +112,10 @@ const KakaoMap = () => {
         <MapMarker
           position={position}
           image={{
-            src: 'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png',
+            src: '/images/musicPin.svg',
             size: {
-              width: 24,
-              height: 35,
+              width: 40,
+              height: 40,
             },
           }}
           clickable={true}
