@@ -1,5 +1,5 @@
 import { AddIcon } from '@chakra-ui/icons';
-import { Center, Select, Button, HStack } from '@chakra-ui/react';
+import { Center, Select, Button, HStack, IconButton } from '@chakra-ui/react';
 import { useState, ChangeEvent, useEffect } from 'react';
 import { useGetMelodyFiltered } from '@/apis/api/get/useGetMelodyFiltered';
 import { useGetMelodyNear } from '@/apis/api/get/useGetMelodyNear';
@@ -13,7 +13,10 @@ export const FilterSelectBar = () => {
   const { locationInfo } = useLocationInfo();
   const setPins = usePinStore((state) => state.setPinList);
   const { melodyFiltered } = useGetMelodyFiltered(filter);
-  const { melodyNear } = useGetMelodyNear({ locationInfo: locationInfo });
+  const { melodyNear } = useGetMelodyNear(
+    { locationInfo: locationInfo },
+    filter == 'all'
+  );
 
   const handleFilterChange = (event: ChangeEvent<HTMLSelectElement>) => {
     setFilter(event.target.value as 'all' | 'likes' | 'created' | 'comment');
@@ -50,7 +53,9 @@ export const FilterSelectBar = () => {
           <option value="comment">내가 반응한 멜로디</option>
         </Select>
 
-        <Button
+        <IconButton
+          aria-label="Add Melody"
+          icon={<AddIcon />}
           size="sm"
           bg="whiteAlpha.800"
           color="black"
@@ -58,9 +63,7 @@ export const FilterSelectBar = () => {
           shadow="sm"
           _hover={{ bg: 'whiteAlpha.900' }}
           onClick={() => console.log('Add Icon button clicked')}
-        >
-          <AddIcon />
-        </Button>
+        />
       </HStack>
     </Center>
   );
