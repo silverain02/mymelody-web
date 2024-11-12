@@ -26,7 +26,7 @@ export const FilterSelectBar = () => {
 
   useEffect(() => {
     if (melodyFiltered) {
-      console.log(melodyFiltered);
+      console.log('필터링 멜로디');
       //setPins(melodyFiltered);
     } else if (melodyNear) {
       //모든 멜로디
