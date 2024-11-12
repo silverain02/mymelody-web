@@ -27,7 +27,7 @@ export const useGetMelodyNear = (
       const res = await authBeInstance.get(
         `mymelody/location?latitude=${locationInfo.lat}&longitude=${locationInfo.lng}&page=1&size=10`
       );
-      return res.data;
+      return res.data.myMelodyInfos;
     },
   });
 
