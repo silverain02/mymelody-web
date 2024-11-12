@@ -31,7 +31,8 @@ export const OnBoarding = () => {
           colorScheme="pink"
           size="lg"
           onClick={() => {
-            router.push('/login');
+            // router.push('/login');
+            router.push('/main');
           }}
         >
           로그인
