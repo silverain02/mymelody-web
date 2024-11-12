@@ -37,11 +37,6 @@ const TrackModule: React.FC<TrackModuleProps> = ({ isrc, onTrackClick }) => {
   });
   const [isPlaying, setIsPlaying] = useState(false);
 
-  // Responsive sizes for image and text
-  const imageSize = useBreakpointValue({ base: '3rem', md: '3.5rem' });
-  const nameMaxW = useBreakpointValue({ base: '7rem', md: '10rem' });
-  const artistMaxW = useBreakpointValue({ base: '5rem', md: '8rem' });
-
   // 노래정보 받아오기
   const { trackDetail, isLoading, error } = useGetTrackInfo(isrc);
 
@@ -85,8 +80,8 @@ const TrackModule: React.FC<TrackModuleProps> = ({ isrc, onTrackClick }) => {
         <Image
           src={track.imageUrl}
           alt={track.name}
-          boxSize={imageSize}
-          minW="48px"
+          boxSize="50px"
+          minW="50px"
           borderRadius="full"
           objectFit="cover"
           animation={isPlaying ? `${rotate} 2s linear infinite` : undefined}
@@ -94,10 +89,22 @@ const TrackModule: React.FC<TrackModuleProps> = ({ isrc, onTrackClick }) => {
       </Box>
 
       <Box ml={3} overflow="hidden" onClick={() => onTrackClick(isrc)}>
-        <Text fontSize="sm" fontWeight="bold" isTruncated maxW={nameMaxW}>
+        <Text
+          fontSize="sm"
+          fontWeight="bold"
+          isTruncated
+          minW={'100px'}
+          maxW={'120px'}
+        >
           {track.name}
         </Text>
-        <Text fontSize="xs" color="gray.500" isTruncated maxW={artistMaxW}>
+        <Text
+          fontSize="xs"
+          color="gray.500"
+          isTruncated
+          minW={'100px'}
+          maxW={'120px'}
+        >
           {track.artist}
         </Text>
       </Box>
