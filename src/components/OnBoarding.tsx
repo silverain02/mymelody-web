@@ -16,7 +16,7 @@ export const OnBoarding = () => {
       {/* 중앙 로고와 이름 */}
       <Center flex="1" flexDirection="column">
         <Image
-          src="/images/FullLogo_Transparent_NoBuffer.png"
+          src="/images/FullLogo_Transparent.png"
           alt="MyMelody Logo"
           boxSize="80px"
           mb={4}
