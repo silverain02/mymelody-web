@@ -8,16 +8,11 @@ import { Center, Select } from '@chakra-ui/react';
 import { useState, ChangeEvent, useEffect } from 'react';
 
 export const FilterSelectBar = () => {
-  const { locationInfo, setLocationInfo, updateLocationInfo } =
-    useLocationInfo();
-  // State for storing selected filter
-  const [filter, setFilter] = useState<'likes' | 'created' | 'comment'>(
+  const [filter, setFilter] = useState<'all' | 'likes' | 'created' | 'comment'>(
     'likes'
   );
-  const [isAll, setIsAll] = useState(true);
-
+  const { locationInfo } = useLocationInfo();
   const setPins = usePinStore((state) => state.setPinList);
-
   const { melodyFiltered } = useGetMelodyFiltered(filter);
 
   const { melodyNear } = useGetMelodyNear({
@@ -26,23 +21,15 @@ export const FilterSelectBar = () => {
 
   // Handle filter change
   const handleFilterChange = (event: ChangeEvent<HTMLSelectElement>) => {
-    if (event.target.value !== 'all') {
-      setFilter(event.target.value as 'likes' | 'created' | 'comment');
-      setIsAll(false);
-    } else {
-      setIsAll(true);
-    }
+    setFilter(event.target.value as 'all' | 'likes' | 'created' | 'comment');
   };
-
-  useEffect(() => {
-    if (isAll) {
-      console.log(melodyNear);
-    }
-  }, [isAll]);
 
   useEffect(() => {
     if (melodyFiltered) {
       setPins(melodyFiltered);
+    } else if (melodyNear) {
+      //모든 멜로디
+      setPins(melodyNear);
     }
   }, [melodyFiltered]);
 
