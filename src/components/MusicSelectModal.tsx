@@ -44,13 +44,13 @@ export const MusicSelectModal: React.FC<MusicSelectModalProps> = ({
   const handleSaveMelody = (melodyInfo: MelodyInfo) => {
     postMelody({ melodyInfo });
   };
-  useEffect(() => {
-    if (isSuccess) {
-      console.log('Melody successfully saved:', data);
-    } else if (error) {
-      console.error('Error saving melody:', error);
-    }
-  }, [isSuccess, data, error]);
+  // useEffect(() => {
+  //   if (isSuccess) {
+  //     console.log('Melody successfully saved:', data);
+  //   } else if (error) {
+  //     console.error('Error saving melody:', error);
+  //   }
+  // }, [isSuccess, data, error]);
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
       <ModalOverlay />

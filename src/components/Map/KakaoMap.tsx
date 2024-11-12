@@ -11,10 +11,10 @@ import { useEffect, useRef, useState } from 'react';
 import TrackModule from '../TrackModule';
 import { getSpotifyToken } from '@/apis/utils/getSpotifyToken';
 import usePinStore from '@/utils/store';
-import { getDistance } from '@/utils/distance';
 import { MusicSelectModal } from '../MusicSelectModal';
 import { useDisclosure } from '@chakra-ui/react';
 import TrackInfoModal from '../TrackInfoModal';
+import { useGetMelodyNear } from '@/apis/api/get/useGetMelodyNear';
 
 interface EventMarkerContainerProps {
   position: {
@@ -24,12 +24,19 @@ interface EventMarkerContainerProps {
   isrc: string;
 }
 
+interface Melody {
+  isrc: string;
+  latitude: number;
+  longitude: number;
+  content: string;
+}
+
 const KakaoMap = () => {
   const { locationInfo, setLocationInfo, updateLocationInfo } =
     useLocationInfo();
   const [currentLocation, setCurrentLocation] = useState(locationInfo);
+  const setPinList = usePinStore((state) => state.setPinList);
   const pinList = usePinStore((state) => state.pinList);
-
   const {
     isOpen: isMusicModalOpen,
     onOpen: onMusicModalOpen,
@@ -46,6 +53,10 @@ const KakaoMap = () => {
     onTrackInfoOpen();
   };
 
+  const { melodyNear, isLoading, isSuccess } = useGetMelodyNear({
+    locationInfo: currentLocation, // Pass the current location
+  });
+
   useEffect(() => {
     getSpotifyToken();
     updateLocationInfo();
@@ -54,12 +65,6 @@ const KakaoMap = () => {
       (pos) => {
         const newLat = pos.coords.latitude;
         const newLng = pos.coords.longitude;
-        const distance = getDistance(
-          locationInfo.lat,
-          locationInfo.lng,
-          newLat,
-          newLng
-        );
       },
       (err) => {
         console.error(err);
@@ -70,11 +75,24 @@ const KakaoMap = () => {
         timeout: 5000,
       }
     );
-
     return () => {
       navigator.geolocation.clearWatch(watchId);
     };
   }, []);
+
+  useEffect(() => {
+    if (melodyNear && isSuccess) {
+      // Update pin list when melodyNear data is fetched successfully
+      const pins = melodyNear.map((melody: Melody) => ({
+        isrc: melody.isrc,
+        latlng: {
+          lat: melody.latitude,
+          lng: melody.longitude,
+        },
+      }));
+      setPinList(pins); // Update the Zustand store with new pin list
+    }
+  }, [melodyNear, isSuccess, setPinList]);
 
   const [loading, error] = useKakaoLoader({
     appkey: process.env.NEXT_PUBLIC_KAKAO_APP_KEY_JS || '',

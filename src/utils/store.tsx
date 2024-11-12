@@ -12,6 +12,7 @@ interface Pin {
 interface PinStore {
   pinList: Pin[];
   addPin: (newPin: Pin) => void;
+  setPinList: (newPins: Pin[]) => void;
 }
 
 const usePinStore = create<PinStore>((set) => ({
@@ -34,6 +35,7 @@ const usePinStore = create<PinStore>((set) => ({
     },
   ],
   addPin: (newPin) => set((state) => ({ pinList: [...state.pinList, newPin] })),
+  setPinList: (newPins) => set({ pinList: newPins }),
 }));
 
 export default usePinStore;
