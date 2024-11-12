@@ -1,8 +1,29 @@
-/* eslint-disable react/function-component-definition */
+import { useGetMelodyFiltered } from '@/apis/api/get/useGetMelodyFiltered';
 import KakaoMap from '@/components/Map/KakaoMap';
+import useLocationInfo from '@/hooks/useLocationInfo';
 import { ChakraProvider } from '@chakra-ui/react';
-import { Box, Center, Flex, Select } from '@chakra-ui/react';
+import { Box, Center, Select } from '@chakra-ui/react';
+import { useState, ChangeEvent, useEffect } from 'react';
+
+// eslint-disable-next-line react/function-component-definition
 export default function Page() {
+  const { locationInfo, setLocationInfo, updateLocationInfo } =
+    useLocationInfo();
+
+  // State for storing selected filter
+  const [filter, setFilter] = useState<'all' | 'likes' | 'created' | 'comment'>(
+    'all'
+  );
+
+  // Handle filter change
+  const handleFilterChange = (event: ChangeEvent<HTMLSelectElement>) => {
+    setFilter(event.target.value as 'all' | 'likes' | 'created' | 'comment');
+  };
+
+  useEffect(() => {
+    console.log(filter);
+  }, [filter]);
+
   return (
     <>
       <ChakraProvider>
@@ -15,7 +36,8 @@ export default function Page() {
             zIndex="10"
           >
             <Select
-              defaultValue="all"
+              value={filter} // Sync with state
+              onChange={handleFilterChange} // Handle change
               size="sm"
               bg="whiteAlpha.800" // 투명하게 설정
               color="black"

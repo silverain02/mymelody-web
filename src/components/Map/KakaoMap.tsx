@@ -35,7 +35,6 @@ const KakaoMap = () => {
   const { locationInfo, setLocationInfo, updateLocationInfo } =
     useLocationInfo();
   const [currentLocation, setCurrentLocation] = useState(locationInfo);
-  const setPinList = usePinStore((state) => state.setPinList);
   const pinList = usePinStore((state) => state.pinList);
   const {
     isOpen: isMusicModalOpen,
@@ -79,20 +78,6 @@ const KakaoMap = () => {
       navigator.geolocation.clearWatch(watchId);
     };
   }, []);
-
-  useEffect(() => {
-    if (melodyNear && isSuccess) {
-      console.log(melodyNear);
-      // const pins = melodyNear.map((melody: Melody) => ({
-      //   isrc: melody.isrc,
-      //   latlng: {
-      //     lat: melody.latitude,
-      //     lng: melody.longitude,
-      //   },
-      // }));
-      // setPinList(pins);
-    }
-  }, [melodyNear, isSuccess, setPinList]);
 
   const [loading, error] = useKakaoLoader({
     appkey: process.env.NEXT_PUBLIC_KAKAO_APP_KEY_JS || '',
