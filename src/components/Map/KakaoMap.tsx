@@ -82,15 +82,15 @@ const KakaoMap = () => {
 
   useEffect(() => {
     if (melodyNear && isSuccess) {
-      // Update pin list when melodyNear data is fetched successfully
-      const pins = melodyNear.map((melody: Melody) => ({
-        isrc: melody.isrc,
-        latlng: {
-          lat: melody.latitude,
-          lng: melody.longitude,
-        },
-      }));
-      setPinList(pins); // Update the Zustand store with new pin list
+      console.log(melodyNear);
+      // const pins = melodyNear.map((melody: Melody) => ({
+      //   isrc: melody.isrc,
+      //   latlng: {
+      //     lat: melody.latitude,
+      //     lng: melody.longitude,
+      //   },
+      // }));
+      // setPinList(pins);
     }
   }, [melodyNear, isSuccess, setPinList]);
 
