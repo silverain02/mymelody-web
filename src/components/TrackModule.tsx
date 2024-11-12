@@ -3,14 +3,8 @@
 import { useGetTrackInfo } from '@/apis/api/get/useGetTrackInfo';
 import { getCleanTrackInfo } from '@/apis/services/getCleanTrackInfo';
 import { useEffect, useState } from 'react';
-import {
-  Image,
-  Text,
-  Box,
-  Flex,
-  keyframes,
-  useBreakpointValue,
-} from '@chakra-ui/react';
+import { Image, Text, Box, Flex, keyframes } from '@chakra-ui/react';
+import { Pin } from '@/utils/store';
 
 interface CleanTrackInfo {
   name: string;
@@ -23,10 +17,15 @@ interface CleanTrackInfo {
 
 interface TrackModuleProps {
   isrc: string;
-  onTrackClick: (isrc: string) => void;
+  pinInfo: Pin;
+  onTrackClick: (pinInfo: Pin) => void;
 }
 
-const TrackModule: React.FC<TrackModuleProps> = ({ isrc, onTrackClick }) => {
+const TrackModule: React.FC<TrackModuleProps> = ({
+  isrc,
+  pinInfo,
+  onTrackClick,
+}) => {
   const [track, setTrack] = useState<CleanTrackInfo>({
     name: '',
     artist: '',
@@ -88,7 +87,7 @@ const TrackModule: React.FC<TrackModuleProps> = ({ isrc, onTrackClick }) => {
         />
       </Box>
 
-      <Box ml={3} overflow="hidden" onClick={() => onTrackClick(isrc)}>
+      <Box ml={3} overflow="hidden" onClick={() => onTrackClick(pinInfo)}>
         <Text
           fontSize="sm"
           fontWeight="bold"
