@@ -1,3 +1,5 @@
+'use client';
+
 import { AddIcon } from '@chakra-ui/icons';
 import { Center, Select, Button, HStack, IconButton } from '@chakra-ui/react';
 import { useState, ChangeEvent, useEffect } from 'react';
