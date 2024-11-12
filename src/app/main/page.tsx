@@ -6,8 +6,8 @@ import { Box } from '@chakra-ui/react';
 
 // eslint-disable-next-line react/function-component-definition
 export default function Page() {
-  const { locationInfo, setLocationInfo, updateLocationInfo } =
-    useLocationInfo();
+  // const { locationInfo, setLocationInfo, updateLocationInfo } =
+  //   useLocationInfo();
 
   return (
     <>

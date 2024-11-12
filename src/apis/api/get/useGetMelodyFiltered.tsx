@@ -4,7 +4,7 @@ import useUserTokenStore from '@/states/useUserTokenStore';
 
 // 필터링 멜로디 받기
 export const useGetMelodyFiltered = (
-  filter: 'likes' | 'created' | 'comment' | null
+  filter: 'likes' | 'created' | 'comment'
 ) => {
   const { userToken } = useUserTokenStore();
   const authBeInstance = authBeAPI(
