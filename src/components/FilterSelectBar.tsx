@@ -25,15 +25,15 @@ export const FilterSelectBar = () => {
   };
 
   useEffect(() => {
-    if (filter !== 'all' && Array.isArray(melodyFiltered)) {
-      console.log('필터링 멜로디');
+    if (filter === 'all') {
+      // Set all melodies when "all" is selected
+      if (Array.isArray(melodyNear)) {
+        setPins(melodyNear);
+      }
+    } else if (Array.isArray(melodyFiltered)) {
+      // Set filtered melodies when a specific filter is selected
       setPins(melodyFiltered);
-    } else if (filter === 'all' && Array.isArray(melodyNear)) {
-      // 모든 멜로디
-      console.log('모든 멜로디');
-      setPins(melodyNear);
     }
-    console.log('오류!');
   }, [melodyFiltered, melodyNear, filter]);
 
   return (

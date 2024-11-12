@@ -1,7 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 import { authBeAPI } from '@/apis';
 import useUserTokenStore from '@/states/useUserTokenStore';
-import useLocationInfo from '@/hooks/useLocationInfo';
 
 // 필터링 멜로디 받기
 export const useGetMelodyFiltered = (
