@@ -57,7 +57,7 @@ export const FilterSelectBar = () => {
         >
           <option value="all">모든 멜로디</option>
           <option value="created">내가 생성한 멜로디</option>
-          <option value="liked">내가 좋아한 멜로디</option>
+          <option value="likes">내가 좋아한 멜로디</option>
           <option value="comment">내가 반응한 멜로디</option>
         </Select>
       </Center>
