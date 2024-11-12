@@ -16,14 +16,11 @@ export const OnBoarding = () => {
       {/* 중앙 로고와 이름 */}
       <Center flex="1" flexDirection="column">
         <Image
-          src="/path/to/logo.png"
+          src="/images/FullLogo_Transparent_NoBuffer.png"
           alt="MyMelody Logo"
           boxSize="80px"
           mb={4}
         />
-        <Text fontSize="3xl" fontWeight="bold" color="pink.600">
-          MyMelody
-        </Text>
       </Center>
 
       {/* 하단 로그인 버튼 */}
