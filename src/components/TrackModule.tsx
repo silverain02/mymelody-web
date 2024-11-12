@@ -3,7 +3,14 @@
 import { useGetTrackInfo } from '@/apis/api/get/useGetTrackInfo';
 import { getCleanTrackInfo } from '@/apis/services/getCleanTrackInfo';
 import { useEffect, useState } from 'react';
-import { Image, Text, Box, Flex, keyframes } from '@chakra-ui/react';
+import {
+  Image,
+  Text,
+  Box,
+  Flex,
+  keyframes,
+  useBreakpointValue,
+} from '@chakra-ui/react';
 
 interface CleanTrackInfo {
   name: string;
@@ -29,6 +36,11 @@ const TrackModule: React.FC<TrackModuleProps> = ({ isrc, onTrackClick }) => {
     albumName: '',
   });
   const [isPlaying, setIsPlaying] = useState(false);
+
+  // Responsive sizes for image and text
+  const imageSize = useBreakpointValue({ base: '3rem', md: '3.5rem' });
+  const nameMaxW = useBreakpointValue({ base: '7rem', md: '10rem' });
+  const artistMaxW = useBreakpointValue({ base: '5rem', md: '8rem' });
 
   // 노래정보 받아오기
   const { trackDetail, isLoading, error } = useGetTrackInfo(isrc);
@@ -73,7 +85,7 @@ const TrackModule: React.FC<TrackModuleProps> = ({ isrc, onTrackClick }) => {
         <Image
           src={track.imageUrl}
           alt={track.name}
-          boxSize="50px"
+          boxSize={imageSize}
           borderRadius="full"
           objectFit="cover"
           animation={isPlaying ? `${rotate} 2s linear infinite` : undefined}
@@ -81,10 +93,10 @@ const TrackModule: React.FC<TrackModuleProps> = ({ isrc, onTrackClick }) => {
       </Box>
 
       <Box ml={3} overflow="hidden" onClick={() => onTrackClick(isrc)}>
-        <Text fontSize="sm" fontWeight="bold" isTruncated maxW="120px">
+        <Text fontSize="sm" fontWeight="bold" isTruncated maxW={nameMaxW}>
           {track.name}
         </Text>
-        <Text fontSize="xs" color="gray.500" isTruncated maxW="100px">
+        <Text fontSize="xs" color="gray.500" isTruncated maxW={artistMaxW}>
           {track.artist}
         </Text>
       </Box>

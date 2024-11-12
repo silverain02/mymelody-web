@@ -23,22 +23,10 @@ interface EventMarkerContainerProps {
   isrc: string;
 }
 
-interface Melody {
-  isrc: string;
-  latitude: number;
-  longitude: number;
-  content: string;
-}
-
 const KakaoMap = () => {
   const { locationInfo, updateLocationInfo } = useLocationInfo();
   const [currentLocation, setCurrentLocation] = useState(locationInfo);
   const pinList = usePinStore((state) => state.pinList);
-  const {
-    isOpen: isMusicModalOpen,
-    onOpen: onMusicModalOpen,
-    onClose: onMusicModalClose,
-  } = useDisclosure();
   const {
     isOpen: isTrackInfoOpen,
     onOpen: onTrackInfoOpen,
@@ -55,10 +43,6 @@ const KakaoMap = () => {
     updateLocationInfo();
   }, []);
 
-  const [loading, error] = useKakaoLoader({
-    appkey: process.env.NEXT_PUBLIC_KAKAO_APP_KEY_JS || '',
-  });
-
   // Track currently visible overlay
   const [visibleOverlayId, setVisibleOverlayId] = useState<string | null>(null);
 
@@ -73,13 +57,11 @@ const KakaoMap = () => {
 
     useEffect(() => {
       const handleOutsideClick = (event: MouseEvent) => {
-        const target = event.target as HTMLElement | null; // Cast to HTMLElement
-        // 클릭한 요소가 overlayRef 안에 포함되지 않은 경우에만 오버레이를 닫음
+        const target = event.target as HTMLElement | null;
         if (overlayRef.current && !overlayRef.current.contains(target)) {
           setVisibleOverlayId(null);
         }
       };
-
       document.addEventListener('mousedown', handleOutsideClick);
       return () => {
         document.removeEventListener('mousedown', handleOutsideClick);
@@ -126,8 +108,6 @@ const KakaoMap = () => {
         style={{ width: '100vw', height: '100vh' }}
         level={3}
       >
-        <MapMarker position={currentLocation} onClick={onMusicModalOpen} />
-
         {pinList.map((value) => (
           <EventMarkerContainer
             key={`EventMarkerContainer-${value.latitude}-${value.longitude}`}
@@ -137,11 +117,6 @@ const KakaoMap = () => {
           />
         ))}
 
-        {/* <MusicSelectModal
-          isOpen={isMusicModalOpen}
-          onClose={onMusicModalClose}
-          currentLocation={currentLocation}
-        /> */}
         <TrackInfoModal
           isOpen={isTrackInfoOpen}
           onClose={onTrackInfoClose}
