@@ -20,8 +20,10 @@ export const usePostMelody = () => {
   const { error, isSuccess, data, mutate } = useMutation({
     mutationKey: ['postMelody'],
     mutationFn: async ({ melodyInfo }: { melodyInfo: MelodyInfo }) => {
-      const res = await authBeInstance.post(`mymelody/create`, melodyInfo);
-      return res.data;
+      await authBeInstance.post(`mymelody/create`, melodyInfo);
+    },
+    onSuccess: () => {
+      console.log('melodyPost성공');
     },
   });
 
