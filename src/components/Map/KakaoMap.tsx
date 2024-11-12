@@ -37,13 +37,15 @@ const KakaoMap = () => {
     setSelectedIsrc(isrc);
     onTrackInfoOpen();
   };
+  const [loading, error] = useKakaoLoader({
+    appkey: process.env.NEXT_PUBLIC_KAKAO_APP_KEY_JS || '',
+  });
 
   useEffect(() => {
     getSpotifyToken();
     updateLocationInfo();
   }, []);
 
-  const [loading, error] = useKakaoLoader({
   // Track currently visible overlay
   const [visibleOverlayId, setVisibleOverlayId] = useState<string | null>(null);
 
@@ -117,12 +119,6 @@ const KakaoMap = () => {
             isrc={value.isrc}
           />
         ))}
-
-        <TrackInfoModal
-          isOpen={isTrackInfoOpen}
-          onClose={onTrackInfoClose}
-          isrc={selectedIsrc}
-        />
       </Map>
     </>
   );
