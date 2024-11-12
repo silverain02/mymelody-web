@@ -16,7 +16,7 @@ export const useGetMelodyFiltered = (
     queryKey: ['melodyFiltered', filter],
     queryFn: async () => {
       const res = await authBeInstance.get(`mymelody/${filter}`);
-      return res.data;
+      return res.data.myMelodyInfos;
     },
   });
 

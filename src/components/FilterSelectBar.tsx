@@ -1,6 +1,7 @@
 'use client';
 
 import { useGetMelodyFiltered } from '@/apis/api/get/useGetMelodyFiltered';
+import usePinStore from '@/utils/store';
 import { Center, Select } from '@chakra-ui/react';
 import { useState, ChangeEvent, useEffect } from 'react';
 
@@ -10,6 +11,8 @@ export const FilterSelectBar = () => {
     'likes'
   );
 
+  const setPins = usePinStore((state) => state.setPinList);
+
   const { melodyFiltered, isLoading, isSuccess, error } =
     useGetMelodyFiltered(filter);
 
@@ -17,11 +20,15 @@ export const FilterSelectBar = () => {
   const handleFilterChange = (event: ChangeEvent<HTMLSelectElement>) => {
     if (event.target.value !== 'all')
       setFilter(event.target.value as 'likes' | 'created' | 'comment');
+    else {
+    }
   };
 
   useEffect(() => {
-    console.log(melodyFiltered);
-  }, [filter]);
+    if (melodyFiltered && isSuccess) {
+      setPins();
+    }
+  }, [melodyFiltered, isSuccess]);
 
   return (
     <>

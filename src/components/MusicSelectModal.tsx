@@ -12,7 +12,7 @@ import {
 import { SearchBar } from './SearchBar';
 import { useEffect, useState } from 'react';
 import { SelectBar } from './SelectBar';
-import usePinStore from '@/utils/store';
+import { usePinStore, refineMyPin, Pin } from '@/utils/store';
 import { usePostMelody } from '@/apis/api/post/usePostMelody';
 
 interface MusicSelectModalProps {
@@ -92,10 +92,12 @@ export const MusicSelectModal: React.FC<MusicSelectModalProps> = ({
             colorScheme="blue"
             mr={3}
             onClick={() => {
-              submitMusic({ isrc: isrcInfo, latlng: currentLocation });
+              submitMusic(
+                refineMyPin(isrcInfo, currentLocation.lat, currentLocation.lng)
+              );
               handleSaveMelody({
-                longitude: currentLocation.lat,
-                latitude: currentLocation.lng,
+                latitude: currentLocation.lat,
+                longitude: currentLocation.lng,
                 isrc: isrcInfo,
                 content: '',
               });

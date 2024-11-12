@@ -10,7 +10,7 @@ import useLocationInfo from '@/hooks/useLocationInfo';
 import { useEffect, useRef, useState } from 'react';
 import TrackModule from '../TrackModule';
 import { getSpotifyToken } from '@/apis/utils/getSpotifyToken';
-import usePinStore from '@/utils/store';
+import { usePinStore } from '@/utils/store';
 import { MusicSelectModal } from '../MusicSelectModal';
 import { useDisclosure } from '@chakra-ui/react';
 import TrackInfoModal from '../TrackInfoModal';
@@ -154,9 +154,9 @@ const KakaoMap = () => {
 
         {pinList.map((value) => (
           <EventMarkerContainer
-            key={`EventMarkerContainer-${value.latlng.lat}-${value.latlng.lng}`}
-            id={`${value.latlng.lat}-${value.latlng.lng}`}
-            position={value.latlng}
+            key={`EventMarkerContainer-${value.latitude}-${value.longitude}`}
+            id={`${value.latitude}-${value.longitude}`}
+            position={{ lat: value.latitude, lng: value.longitude }}
             isrc={value.isrc}
           />
         ))}
