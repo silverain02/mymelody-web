@@ -59,7 +59,7 @@ const TrackInfoModal: React.FC<TrackInfoModalProps> = ({
     albumName: '',
   });
   const [isPlaying, setIsPlaying] = useState(false);
-  const [liked, setLiked] = useState(false);
+  const [liked, setLiked] = useState(pinInfo?.isLiked);
   const [comments, setComments] = useState<Comment[]>([]);
   const [newComment, setNewComment] = useState('');
 
@@ -112,6 +112,15 @@ const TrackInfoModal: React.FC<TrackInfoModalProps> = ({
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
       <ModalOverlay />
+      <ModalHeader>
+        <Text fontSize="2vh" fontWeight="bold" isTruncated maxW="100%">
+          {pinInfo?.content}
+        </Text>
+        <Text fontSize="1.5vh" color="gray.500" isTruncated maxW="100%">
+          by{pinInfo?.nickname}
+        </Text>
+      </ModalHeader>
+      <ModalCloseButton />
       <ModalContent
         maxW={['80vw', '50vw']} // 모달 너비를 viewport 너비로 설정
         mx="auto"
@@ -119,8 +128,6 @@ const TrackInfoModal: React.FC<TrackInfoModalProps> = ({
         flexDirection="column"
         p="2vh" // 패딩을 viewport 높이로 설정하여 여유 공간 제공
       >
-        <ModalCloseButton />
-
         <ModalBody mt="2vh">
           <Flex align="center" gap="2vw" justify="space-evenly" w="full">
             <Box position="relative" onClick={handleAlbumClick}>
