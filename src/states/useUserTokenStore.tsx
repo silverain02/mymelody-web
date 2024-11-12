@@ -6,7 +6,10 @@ interface Store {
 }
 
 const useUserTokenStore = create<Store>((set) => ({
-  userToken: null,
+  userToken: {
+    accessToken: process.env.NEXT_PUBLIC_TEMP_ACCESS_TOKEN || '',
+    refreshToken: '',
+  },
   setUserToken: (accessToken: string, refreshToken: string) =>
     set({
       userToken: {

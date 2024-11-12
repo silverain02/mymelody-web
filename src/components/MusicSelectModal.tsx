@@ -10,9 +10,10 @@ import {
   Box,
 } from '@chakra-ui/react';
 import { SearchBar } from './SearchBar';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { SelectBar } from './SelectBar';
 import usePinStore from '@/utils/store';
+import { usePostMelody } from '@/apis/api/post/usePostMelody';
 
 interface MusicSelectModalProps {
   isOpen: boolean;
@@ -22,16 +23,36 @@ interface MusicSelectModalProps {
     lng: number;
   };
 }
+interface MelodyInfo {
+  longitude: number;
+  latitude: number;
+  isrc: string;
+  content: string;
+}
 
 export const MusicSelectModal: React.FC<MusicSelectModalProps> = ({
   isOpen,
   onClose,
   currentLocation,
 }) => {
+  const { data, isLoading, isSuccess, error, postMelody } = usePostMelody();
   const [isListOpen, setIsListOpen] = useState(false); // 음악정보 리스트 열람 여부
   const [musicName, setMusicName] = useState(''); // 검색 데이터
   const [isrcInfo, setIsrcInfo] = useState('');
+
   const submitMusic = usePinStore((state) => state.addPin);
+  const handleSaveMelody = (melodyInfo: MelodyInfo) => {
+    postMelody({ melodyInfo });
+  };
+
+  useEffect(() => {
+    if (isSuccess) {
+      console.log('Melody successfully saved:', data);
+    }
+    if (error) {
+      console.log(error);
+    }
+  }, [isSuccess, data, error]);
 
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
@@ -75,6 +96,12 @@ export const MusicSelectModal: React.FC<MusicSelectModalProps> = ({
             mr={3}
             onClick={() => {
               submitMusic({ isrc: isrcInfo, latlng: currentLocation });
+              handleSaveMelody({
+                longitude: currentLocation.lat,
+                latitude: currentLocation.lng,
+                isrc: isrcInfo,
+                content: '',
+              });
               onClose(); // Close the modal after submitting
             }}
           >
