@@ -43,6 +43,7 @@ const KakaoMap = () => {
     updateLocationInfo();
   }, []);
 
+  const [loading, error] = useKakaoLoader({
   // Track currently visible overlay
   const [visibleOverlayId, setVisibleOverlayId] = useState<string | null>(null);
 
