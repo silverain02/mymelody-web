@@ -89,6 +89,11 @@ const TrackInfoModal: React.FC<TrackInfoModalProps> = ({
       setTrack(cleanTrackInfo);
     }
   }, [isLoading, trackDetail]);
+  useEffect(() => {
+    if (pinInfo) {
+      setLiked(pinInfo.isLiked);
+    }
+  }, [pinInfo]);
 
   const handleLike = () => {
     setLiked(!liked);
@@ -120,16 +125,8 @@ const TrackInfoModal: React.FC<TrackInfoModalProps> = ({
         flexDirection="column"
         p="2vh" // 패딩을 viewport 높이로 설정하여 여유 공간 제공
       >
-        <ModalHeader>
-          <Text fontSize="2vh" fontWeight="bold" isTruncated maxW="100%">
-            {pinInfo?.content}
-          </Text>
-          <Text fontSize="1.5vh" color="gray.500" isTruncated maxW="100%">
-            by{pinInfo?.nickname}
-          </Text>
-        </ModalHeader>
         <ModalCloseButton />
-        <ModalBody mt="2vh">
+        <ModalBody>
           <Flex align="center" gap="2vw" justify="space-evenly" w="full">
             <Box position="relative" onClick={handleAlbumClick}>
               <Image
@@ -158,6 +155,14 @@ const TrackInfoModal: React.FC<TrackInfoModalProps> = ({
               onClick={handleLike}
             />
           </Flex>
+          <Box w="full">
+            <Text fontSize="1.5vh" color="gray.500" isTruncated maxW="100%">
+              {pinInfo?.content}
+            </Text>
+            <Text fontSize="1.5vh" color="gray.500" isTruncated maxW="100%">
+              by{pinInfo?.nickname}
+            </Text>
+          </Box>
           <VStack align="stretch" spacing="1.5vh" w="full">
             {comments.map((comment) => (
               <Box key={comment.id} p="1.5vh" bg="gray.100" borderRadius="md">
@@ -189,6 +194,12 @@ const TrackInfoModal: React.FC<TrackInfoModalProps> = ({
             />
           </Flex>
         </ModalFooter>
+        {/* 오디오 프리뷰 */}
+        <audio id={`audio-${pinInfo?.isrc}`} style={{ display: 'none' }}>
+          <track kind="captions" />
+          <source src={track.previewUrl} type="audio/mpeg" />
+          Your browser does not support the audio element.
+        </audio>
       </ModalContent>
     </Modal>
   );
