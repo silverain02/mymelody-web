@@ -86,6 +86,7 @@ const TrackModule: React.FC<TrackModuleProps> = ({ isrc, onTrackClick }) => {
           src={track.imageUrl}
           alt={track.name}
           boxSize={imageSize}
+          minW="48px"
           borderRadius="full"
           objectFit="cover"
           animation={isPlaying ? `${rotate} 2s linear infinite` : undefined}
