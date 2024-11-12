@@ -1,21 +1,26 @@
 'use client';
 
+import { useGetMelodyFiltered } from '@/apis/api/get/useGetMelodyFiltered';
 import { Center, Select } from '@chakra-ui/react';
 import { useState, ChangeEvent, useEffect } from 'react';
 
 export const FilterSelectBar = () => {
   // State for storing selected filter
-  const [filter, setFilter] = useState<'all' | 'likes' | 'created' | 'comment'>(
-    'all'
+  const [filter, setFilter] = useState<'likes' | 'created' | 'comment'>(
+    'likes'
   );
+
+  const { melodyFiltered, isLoading, isSuccess, error } =
+    useGetMelodyFiltered(filter);
 
   // Handle filter change
   const handleFilterChange = (event: ChangeEvent<HTMLSelectElement>) => {
-    setFilter(event.target.value as 'all' | 'likes' | 'created' | 'comment');
+    if (event.target.value !== 'all')
+      setFilter(event.target.value as 'likes' | 'created' | 'comment');
   };
 
   useEffect(() => {
-    console.log(filter);
+    console.log(melodyFiltered);
   }, [filter]);
 
   return (
