@@ -1,7 +1,7 @@
 'use client';
 
 import { useGetMelodyFiltered } from '@/apis/api/get/useGetMelodyFiltered';
-import usePinStore from '@/utils/store';
+import { usePinStore, Pin } from '@/utils/store';
 import { Center, Select } from '@chakra-ui/react';
 import { useState, ChangeEvent, useEffect } from 'react';
 
@@ -26,7 +26,7 @@ export const FilterSelectBar = () => {
 
   useEffect(() => {
     if (melodyFiltered && isSuccess) {
-      setPins();
+      setPins(melodyFiltered);
     }
   }, [melodyFiltered, isSuccess]);
 
