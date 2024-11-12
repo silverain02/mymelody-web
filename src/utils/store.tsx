@@ -24,7 +24,7 @@ export const usePinStore = create<PinStore>((set) => ({
     {
       content: '',
       isLiked: false,
-      isrc: 'USA2P2254487',
+      isrc: 'USA2P2230223',
       latitude: 37.5513,
       longitude: 126.9246,
       myMelodyId: 7,

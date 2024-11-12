@@ -52,31 +52,9 @@ const KakaoMap = () => {
     onTrackInfoOpen();
   };
 
-  const { melodyNear, isLoading, isSuccess } = useGetMelodyNear({
-    locationInfo: currentLocation, // Pass the current location
-  });
-
   useEffect(() => {
     getSpotifyToken();
     updateLocationInfo();
-
-    const watchId = navigator.geolocation.watchPosition(
-      (pos) => {
-        const newLat = pos.coords.latitude;
-        const newLng = pos.coords.longitude;
-      },
-      (err) => {
-        console.error(err);
-      },
-      {
-        enableHighAccuracy: true,
-        maximumAge: 0,
-        timeout: 5000,
-      }
-    );
-    return () => {
-      navigator.geolocation.clearWatch(watchId);
-    };
   }, []);
 
   const [loading, error] = useKakaoLoader({

@@ -1,34 +1,50 @@
 'use client';
 
 import { useGetMelodyFiltered } from '@/apis/api/get/useGetMelodyFiltered';
+import { useGetMelodyNear } from '@/apis/api/get/useGetMelodyNear';
+import useLocationInfo from '@/hooks/useLocationInfo';
 import { usePinStore, Pin } from '@/utils/store';
 import { Center, Select } from '@chakra-ui/react';
 import { useState, ChangeEvent, useEffect } from 'react';
 
 export const FilterSelectBar = () => {
+  const { locationInfo, setLocationInfo, updateLocationInfo } =
+    useLocationInfo();
   // State for storing selected filter
   const [filter, setFilter] = useState<'likes' | 'created' | 'comment'>(
     'likes'
   );
+  const [isAll, setIsAll] = useState(true);
 
   const setPins = usePinStore((state) => state.setPinList);
 
-  const { melodyFiltered, isLoading, isSuccess, error } =
-    useGetMelodyFiltered(filter);
+  const { melodyFiltered } = useGetMelodyFiltered(filter);
+
+  const { melodyNear } = useGetMelodyNear({
+    locationInfo: locationInfo, // Pass the current location
+  });
 
   // Handle filter change
   const handleFilterChange = (event: ChangeEvent<HTMLSelectElement>) => {
-    if (event.target.value !== 'all')
+    if (event.target.value !== 'all') {
       setFilter(event.target.value as 'likes' | 'created' | 'comment');
-    else {
+      setIsAll(false);
+    } else {
+      setIsAll(true);
     }
   };
 
   useEffect(() => {
-    if (melodyFiltered && isSuccess) {
+    if (isAll) {
+      console.log(melodyNear);
+    }
+  }, [isAll]);
+
+  useEffect(() => {
+    if (melodyFiltered) {
       setPins(melodyFiltered);
     }
-  }, [melodyFiltered, isSuccess]);
+  }, [melodyFiltered]);
 
   return (
     <>

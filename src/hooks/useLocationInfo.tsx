@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 
-interface locationInfoType {
+export interface locationInfoType {
   lat: number;
   lng: number;
 }
