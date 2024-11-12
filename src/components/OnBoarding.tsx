@@ -18,7 +18,8 @@ export const OnBoarding = () => {
         <Image
           src="/images/FullLogo_Transparent.png"
           alt="MyMelody Logo"
-          boxSize="80px"
+          width="30vw" // 원하는 크기로 설정
+          height="auto" // 비율을 유지하면서 크기 조절
           mb={4}
         />
       </Center>
