@@ -9,14 +9,14 @@ import { useState, ChangeEvent, useEffect } from 'react';
 
 export const FilterSelectBar = () => {
   const [filter, setFilter] = useState<'all' | 'likes' | 'created' | 'comment'>(
-    'likes'
+    'all'
   );
   const { locationInfo } = useLocationInfo();
   const setPins = usePinStore((state) => state.setPinList);
   const { melodyFiltered } = useGetMelodyFiltered(filter);
 
   const { melodyNear } = useGetMelodyNear({
-    locationInfo: locationInfo, // Pass the current location
+    locationInfo: locationInfo,
   });
 
   // Handle filter change
