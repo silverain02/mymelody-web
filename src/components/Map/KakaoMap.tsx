@@ -14,8 +14,6 @@ import { usePinStore } from '@/utils/store';
 import { MusicSelectModal } from '../MusicSelectModal';
 import { useDisclosure } from '@chakra-ui/react';
 import TrackInfoModal from '../TrackInfoModal';
-import { useGetMelodyNear } from '@/apis/api/get/useGetMelodyNear';
-
 interface EventMarkerContainerProps {
   position: {
     lat: number;

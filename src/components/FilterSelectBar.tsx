@@ -26,12 +26,13 @@ export const FilterSelectBar = () => {
 
   useEffect(() => {
     if (melodyFiltered) {
-      setPins(melodyFiltered);
+      console.log(melodyFiltered);
+      //setPins(melodyFiltered);
     } else if (melodyNear) {
       //모든 멜로디
       setPins(melodyNear);
     }
-  }, [melodyFiltered]);
+  }, [melodyFiltered, filter]);
 
   return (
     <>
