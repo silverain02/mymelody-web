@@ -1,4 +1,4 @@
-import { useMutation } from 'react-query';
+import { useMutation } from '@tanstack/react-query';
 import { authBeAPI } from '@/apis';
 import useUserTokenStore from '@/states/useUserTokenStore';
 // code로 user Token받기
@@ -8,7 +8,7 @@ export const usePostLogout = () => {
     process.env.NEXT_PUBLIC_BE_URL as string,
     userToken?.accessToken || ''
   );
-  const { isLoading, error, isSuccess } = useMutation({
+  const { error, isSuccess } = useMutation({
     mutationKey: ['logout'],
     mutationFn: async () => {
       await authBeInstance.post(`auth/logout`);
@@ -16,7 +16,6 @@ export const usePostLogout = () => {
   });
 
   return {
-    isLoading,
     isSuccess,
     error,
   };

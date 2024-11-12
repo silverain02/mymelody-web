@@ -1,4 +1,4 @@
-import { useMutation } from 'react-query';
+import { useMutation } from '@tanstack/react-query';
 import { authBeAPI } from '@/apis';
 import useUserTokenStore from '@/states/useUserTokenStore';
 
@@ -17,7 +17,7 @@ export const usePostMelody = () => {
     userToken?.accessToken || ''
   );
 
-  const { isLoading, error, isSuccess, data, mutate } = useMutation({
+  const { error, isSuccess, data, mutate } = useMutation({
     mutationKey: ['postMelody'],
     mutationFn: async ({ melodyInfo }: { melodyInfo: MelodyInfo }) => {
       const res = await authBeInstance.post(`mymelody/create`, melodyInfo);
@@ -27,7 +27,6 @@ export const usePostMelody = () => {
 
   return {
     data,
-    isLoading,
     isSuccess,
     error,
     postMelody: mutate, // mutate 함수를 postMelody로 반환

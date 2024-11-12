@@ -35,7 +35,7 @@ export const MusicSelectModal: React.FC<MusicSelectModalProps> = ({
   onClose,
   currentLocation,
 }) => {
-  const { data, isLoading, isSuccess, error, postMelody } = usePostMelody();
+  const { data, isSuccess, error, postMelody } = usePostMelody();
   const [isListOpen, setIsListOpen] = useState(false); // 음악정보 리스트 열람 여부
   const [musicName, setMusicName] = useState(''); // 검색 데이터
   const [isrcInfo, setIsrcInfo] = useState('');
