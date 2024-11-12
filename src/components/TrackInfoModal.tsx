@@ -126,7 +126,7 @@ const TrackInfoModal: React.FC<TrackInfoModalProps> = ({
         p="2vh" // 패딩을 viewport 높이로 설정하여 여유 공간 제공
       >
         <ModalCloseButton />
-        <ModalBody>
+        <ModalBody mt="2vh">
           <Flex align="center" gap="2vw" justify="space-evenly" w="full">
             <Box position="relative" onClick={handleAlbumClick}>
               <Image
@@ -155,8 +155,14 @@ const TrackInfoModal: React.FC<TrackInfoModalProps> = ({
               onClick={handleLike}
             />
           </Flex>
-          <Box w="full">
-            <Text fontSize="1.5vh" color="gray.500" isTruncated maxW="100%">
+          <Box w="full" mt="1vh">
+            <Text
+              fontSize="1.5vh"
+              color="gray.500"
+              overflowWrap="break-word"
+              maxW="100%"
+              whiteSpace="normal"
+            >
               {pinInfo?.content}
             </Text>
             <Text fontSize="1.5vh" color="gray.500" isTruncated maxW="100%">
