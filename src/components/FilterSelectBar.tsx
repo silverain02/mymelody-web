@@ -32,6 +32,13 @@ export const FilterSelectBar = () => {
     setFilter(event.target.value as 'all' | 'likes' | 'created' | 'comment');
   };
 
+  // Set initial pins to all melodies on first render
+  useEffect(() => {
+    if (Array.isArray(melodyNear)) {
+      setPins(melodyNear);
+    }
+  }, [melodyNear, setPins]);
+
   useEffect(() => {
     if (filter === 'all' && Array.isArray(melodyNear)) {
       console.log('모든멜로디');
