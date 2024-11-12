@@ -31,8 +31,7 @@ interface Melody {
 }
 
 const KakaoMap = () => {
-  const { locationInfo, setLocationInfo, updateLocationInfo } =
-    useLocationInfo();
+  const { locationInfo, updateLocationInfo } = useLocationInfo();
   const [currentLocation, setCurrentLocation] = useState(locationInfo);
   const pinList = usePinStore((state) => state.pinList);
   const {
@@ -138,11 +137,11 @@ const KakaoMap = () => {
           />
         ))}
 
-        <MusicSelectModal
+        {/* <MusicSelectModal
           isOpen={isMusicModalOpen}
           onClose={onMusicModalClose}
           currentLocation={currentLocation}
-        />
+        /> */}
         <TrackInfoModal
           isOpen={isTrackInfoOpen}
           onClose={onTrackInfoClose}
