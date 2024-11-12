@@ -20,7 +20,11 @@ export const metadata: Metadata = {
       url: '/images/IconOnly_Transparent_NoBuffer.png',
       sizes: '32x30',
     },
-    { rel: 'icon', url: '/icons/pwa-icons/logo-192x192.png', sizes: '192x192' },
+    {
+      rel: 'icon',
+      url: '/images/IconOnly_Transparent_NoBuffer.png',
+      sizes: '192x192',
+    },
     // 추가 아이콘 정보
   ],
 };
