@@ -35,7 +35,7 @@ export const MusicSelectModal: React.FC<MusicSelectModalProps> = ({
   onClose,
   currentLocation,
 }) => {
-  const { data, isSuccess, error, postMelody } = usePostMelody();
+  const { postMelody, isSuccess, data, error } = usePostMelody();
   const [isListOpen, setIsListOpen] = useState(false); // 음악정보 리스트 열람 여부
   const [musicName, setMusicName] = useState(''); // 검색 데이터
   const [isrcInfo, setIsrcInfo] = useState('');
@@ -44,6 +44,13 @@ export const MusicSelectModal: React.FC<MusicSelectModalProps> = ({
   const handleSaveMelody = (melodyInfo: MelodyInfo) => {
     postMelody({ melodyInfo });
   };
+  useEffect(() => {
+    if (isSuccess) {
+      console.log('Melody successfully saved:', data);
+    } else if (error) {
+      console.error('Error saving melody:', error);
+    }
+  }, [isSuccess, data, error]);
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
       <ModalOverlay />
