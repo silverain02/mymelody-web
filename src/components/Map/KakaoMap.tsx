@@ -12,8 +12,9 @@ import TrackModule from '../TrackModule';
 import { getSpotifyToken } from '@/apis/utils/getSpotifyToken';
 import { usePinStore } from '@/utils/store';
 import { MusicSelectModal } from '../MusicSelectModal';
-import { useDisclosure } from '@chakra-ui/react';
+import { useDisclosure, Button } from '@chakra-ui/react';
 import TrackInfoModal from '../TrackInfoModal';
+import { AddIcon } from '@chakra-ui/icons';
 interface EventMarkerContainerProps {
   position: {
     lat: number;
@@ -148,6 +149,17 @@ const KakaoMap = () => {
           isrc={selectedIsrc}
         />
       </Map>
+      <Button
+        size="sm"
+        bg="whiteAlpha.800"
+        color="black"
+        borderRadius="md"
+        shadow="sm"
+        _hover={{ bg: 'whiteAlpha.900' }}
+        onClick={() => console.log('Add Icon button clicked')}
+      >
+        <AddIcon />
+      </Button>
     </>
   );
 };
