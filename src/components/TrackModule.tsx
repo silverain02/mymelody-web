@@ -78,7 +78,7 @@ const TrackModule: React.FC<TrackModuleProps> = ({ isrc, onTrackClick }) => {
       borderRadius="lg"
       boxShadow="md"
       cursor="pointer"
-      maxW="300px"
+      minW="15rem"
     >
       {/* 앨범 이미지 */}
       <Box position="relative" onClick={handleAlbumClick}>
