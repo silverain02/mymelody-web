@@ -15,6 +15,11 @@ export const metadata: Metadata = {
   viewport:
     'minimum-scale=1, initial-scale=1, width=device-width, shrink-to-fit=no, viewport-fit=cover',
   icons: [
+    {
+      rel: 'icon',
+      url: '/images/IconOnly_Transparent_NoBuffer.png',
+      sizes: '32x30',
+    },
     { rel: 'icon', url: '/icons/pwa-icons/logo-192x192.png', sizes: '192x192' },
     // 추가 아이콘 정보
   ],
