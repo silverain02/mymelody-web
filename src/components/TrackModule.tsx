@@ -93,7 +93,7 @@ const TrackModule: React.FC<TrackModuleProps> = ({ isrc, onTrackClick }) => {
           fontSize="sm"
           fontWeight="bold"
           isTruncated
-          minW={'100px'}
+          minW={'50px'}
           maxW={'120px'}
         >
           {track.name}
@@ -102,7 +102,7 @@ const TrackModule: React.FC<TrackModuleProps> = ({ isrc, onTrackClick }) => {
           fontSize="xs"
           color="gray.500"
           isTruncated
-          minW={'100px'}
+          minW={'50px'}
           maxW={'120px'}
         >
           {track.artist}
