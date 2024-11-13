@@ -22,6 +22,8 @@ import {
 import { useEffect, useState } from 'react';
 import { AddIcon, StarIcon } from '@chakra-ui/icons'; // Chakra UI의 StarIcon 사용
 import { Pin } from '@/utils/store';
+import { useGetUserToken } from '@/apis/api/get/useGetUserToken';
+import { useGetUserName } from '@/apis/api/get/useGetUserName';
 
 interface TrackInfoModalProps {
   isOpen: boolean;
@@ -64,6 +66,7 @@ const TrackInfoModal: React.FC<TrackInfoModalProps> = ({
   const [newComment, setNewComment] = useState('');
 
   const { trackDetail, isLoading } = useGetTrackInfo(pinInfo?.isrc ?? '');
+  const { userName } = useGetUserName();
 
   // Rotate animation
   const rotate = keyframes`
@@ -106,7 +109,7 @@ const TrackInfoModal: React.FC<TrackInfoModalProps> = ({
         {
           id: prevComments.length + 1,
           text: newComment,
-          author: 'User', // Replace with actual user data
+          author: userName,
           createdAt: new Date().toLocaleString(),
         },
       ]);

@@ -20,19 +20,7 @@ interface PinStore {
 }
 
 export const usePinStore = create<PinStore>((set) => ({
-  pinList: [
-    // {
-    //   content: '',
-    //   isLiked: false,
-    //   isrc: 'USA2P2230223',
-    //   latitude: 37.5513,
-    //   longitude: 126.9246,
-    //   myMelodyId: 7,
-    //   nickname: '이윤서',
-    //   totalComments: 0,
-    //   totalLikes: 0,
-    // },
-  ],
+  pinList: [],
   addPin: (newPin) => set((state) => ({ pinList: [...state.pinList, newPin] })),
   setPinList: (newPins) => set({ pinList: newPins }),
 }));
