@@ -89,7 +89,7 @@ const TrackInfoModal: React.FC<TrackInfoModalProps> = ({
 
   useEffect(() => {
     if (pinInfo?.isrc && melodyComments) {
-      const formattedComments = melodyComments.map((comment) => ({
+      const formattedComments = melodyComments.map((comment: any) => ({
         id: comment.commentId,
         text: comment.content,
         author: comment.nickname,
