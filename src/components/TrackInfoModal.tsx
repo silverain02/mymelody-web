@@ -20,6 +20,7 @@ import { useEffect, useState } from 'react';
 import { AddIcon, StarIcon } from '@chakra-ui/icons'; // Chakra UI의 StarIcon 사용
 import { Pin } from '@/utils/store';
 import { useGetUserName } from '@/apis/api/get/useGetUserName';
+import { useGetComments } from '@/apis/api/get/useGetComments';
 
 interface TrackInfoModalProps {
   isOpen: boolean;
@@ -66,6 +67,7 @@ const TrackInfoModal: React.FC<TrackInfoModalProps> = ({
 
   const { trackDetail, isLoading } = useGetTrackInfo(pinInfo?.isrc ?? '');
   const { userName } = useGetUserName();
+  const { melodyComments } = useGetComments(pinInfo?.myMelodyId);
 
   // Rotate animation
   const rotate = keyframes`
@@ -84,6 +86,15 @@ const TrackInfoModal: React.FC<TrackInfoModalProps> = ({
     }
     setIsPlaying(!isPlaying);
   };
+
+  useEffect(() => {
+    if (pinInfo?.isrc && melodyComments) {
+      setCommentsByTrack((prevComments) => ({
+        ...prevComments,
+        [pinInfo.isrc]: melodyComments,
+      }));
+    }
+  }, [pinInfo?.isrc, melodyComments]);
 
   useEffect(() => {
     if (!isLoading && trackDetail) {
