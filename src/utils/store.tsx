@@ -28,16 +28,18 @@ export const usePinStore = create<PinStore>((set) => ({
 export const refineMyPin = (
   isrc: string,
   latitude: number,
-  longitude: number
+  longitude: number,
+  comment: string,
+  userName: string
 ) => {
   return {
-    content: '',
+    content: comment,
     isLiked: false,
     isrc: isrc,
     latitude: latitude,
     longitude: longitude,
     myMelodyId: 0,
-    nickname: 'userName',
+    nickname: userName,
     totalComments: 0,
     totalLikes: 0,
   };

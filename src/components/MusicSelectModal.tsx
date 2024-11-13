@@ -16,6 +16,7 @@ import { SelectBar } from './SelectBar';
 import { usePinStore, refineMyPin, Pin } from '@/utils/store';
 import { usePostMelody } from '@/apis/api/post/usePostMelody';
 import { MusicCommentModal } from './MusicCommentModal';
+import { useGetUserName } from '@/apis/api/get/useGetUserName';
 
 interface MusicSelectModalProps {
   isOpen: boolean;
@@ -41,6 +42,7 @@ export const MusicSelectModal: React.FC<MusicSelectModalProps> = ({
   const [isListOpen, setIsListOpen] = useState(false); // 음악정보 리스트 열람 여부
   const [musicName, setMusicName] = useState(''); // 검색 데이터
   const [isrcInfo, setIsrcInfo] = useState('');
+  const { userName } = useGetUserName();
 
   const submitMusic = usePinStore((state) => state.addPin);
   const handleSaveMelody = (melodyInfo: MelodyInfo) => {
@@ -56,14 +58,23 @@ export const MusicSelectModal: React.FC<MusicSelectModalProps> = ({
     setComment(enteredComment);
     // Call your submit functions here after the comment is confirmed
     submitMusic(
-      refineMyPin(isrcInfo, currentLocation.lat, currentLocation.lng)
+      refineMyPin(
+        isrcInfo,
+        currentLocation.lat,
+        currentLocation.lng,
+        enteredComment,
+        userName
+      )
     );
-    handleSaveMelody({
-      latitude: currentLocation.lat,
-      longitude: currentLocation.lng,
-      isrc: isrcInfo,
-      content: enteredComment,
-    });
+    handleSaveMelody(
+      refineMyPin(
+        isrcInfo,
+        currentLocation.lat,
+        currentLocation.lng,
+        enteredComment,
+        userName
+      )
+    );
     onClose(); // Close the main modal after submit
   };
   return (
