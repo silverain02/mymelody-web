@@ -123,6 +123,16 @@ const KakaoMap = () => {
         style={{ width: '100vw', height: '100vh' }}
         level={3}
       >
+        <MapMarker
+          position={currentLocation}
+          image={{
+            src: '/images/musicPinDiff.svg',
+            size: {
+              width: 40,
+              height: 40,
+            },
+          }}
+        />
         {pinList.map((value) => (
           <EventMarkerContainer
             key={`EventMarkerContainer-${value.latitude}-${value.longitude}`}
