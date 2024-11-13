@@ -28,11 +28,11 @@ export const OnBoarding = () => {
       <Box width="100%" p={4} pb={8}>
         <Button
           width="100%"
-          colorScheme="pink"
+          bgColor="#FF003D"
+          color="#ffffff"
           size="lg"
           onClick={() => {
-            // router.push('/login');
-            router.push('/main');
+            router.push('/login');
           }}
         >
           로그인
