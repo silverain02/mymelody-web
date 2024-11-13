@@ -2,6 +2,7 @@
 
 import { useGetUserToken } from '@/apis/api/get/useGetUserToken';
 import useUserTokenStore from '@/states/useUserTokenStore';
+import { Box, Spinner, VStack, Text } from '@chakra-ui/react';
 import { useSearchParams, useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 
@@ -29,5 +30,14 @@ export default function Page() {
     }
   }, [userTokenObj, error]);
 
-  return <div>callbackPage</div>;
+  return (
+    <Box className="flex h-screen items-center justify-center bg-gray-100">
+      <VStack spacing={4} className="text-center">
+        <Spinner size="xl" color="blue.500" />
+        <Text fontSize="2xl" fontWeight="bold" className="text-gray-700">
+          Loading...
+        </Text>
+      </VStack>
+    </Box>
+  );
 }
