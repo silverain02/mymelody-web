@@ -169,7 +169,7 @@ const TrackInfoModal: React.FC<TrackInfoModalProps> = ({
               by{pinInfo?.nickname}
             </Text>
           </Box>
-          <VStack align="stretch" spacing="1.5vh" w="full" mt="2h">
+          <VStack align="stretch" spacing="1.5vh" w="full" mt="1vh">
             {comments.map((comment) => (
               <Box key={comment.id} p="1.5vh" bg="gray.100" borderRadius="md">
                 <Text fontWeight="bold" fontSize="1.5vh">
