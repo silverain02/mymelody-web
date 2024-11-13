@@ -89,9 +89,16 @@ const TrackInfoModal: React.FC<TrackInfoModalProps> = ({
 
   useEffect(() => {
     if (pinInfo?.isrc && melodyComments) {
+      const formattedComments = melodyComments.map((comment) => ({
+        id: comment.commentId,
+        text: comment.content,
+        author: comment.nickname,
+        createdAt: new Date().toLocaleString(), // Adjust if you have a specific `createdAt` field
+      }));
+
       setCommentsByTrack((prevComments) => ({
         ...prevComments,
-        [pinInfo.isrc]: melodyComments,
+        [pinInfo.isrc]: formattedComments,
       }));
     }
   }, [pinInfo?.isrc, melodyComments]);
