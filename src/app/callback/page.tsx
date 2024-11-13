@@ -2,13 +2,14 @@
 
 import { useGetUserToken } from '@/apis/api/get/useGetUserToken';
 import useUserTokenStore from '@/states/useUserTokenStore';
-import { useSearchParams } from 'next/navigation';
+import { useSearchParams, useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 
 /* eslint-disable react/function-component-definition */
 export default function Page() {
   const searchParams = useSearchParams();
   const code = searchParams.get('code');
+  const router = useRouter();
 
   //userToken 받아오기
   const { userTokenObj, error } = useGetUserToken(code);
@@ -20,6 +21,7 @@ export default function Page() {
       console.log(userTokenObj);
       setUserToken(userTokenObj.accessToken, userTokenObj.refreshToken);
       console.log(userToken?.accessToken);
+      router.push('/main');
     }
 
     if (error) {
