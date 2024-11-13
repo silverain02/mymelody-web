@@ -12,7 +12,7 @@ export const useGetUserName = () => {
   const { data, isLoading, isSuccess, error } = useQuery({
     queryKey: ['userName'],
     queryFn: async () => {
-      const res = await authBeInstance.get(`users/nickname`);
+      const res = await authBeInstance.get(`auth/test`);
       return res.data;
     },
   });

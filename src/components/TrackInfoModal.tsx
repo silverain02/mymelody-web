@@ -4,11 +4,9 @@ import {
   Modal,
   ModalOverlay,
   ModalContent,
-  ModalHeader,
   ModalCloseButton,
   ModalBody,
   ModalFooter,
-  Button,
   keyframes,
   Box,
   Flex,
@@ -17,12 +15,10 @@ import {
   Input,
   IconButton,
   VStack,
-  HStack,
 } from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
 import { AddIcon, StarIcon } from '@chakra-ui/icons'; // Chakra UI의 StarIcon 사용
 import { Pin } from '@/utils/store';
-import { useGetUserToken } from '@/apis/api/get/useGetUserToken';
 import { useGetUserName } from '@/apis/api/get/useGetUserName';
 
 interface TrackInfoModalProps {
@@ -62,8 +58,11 @@ const TrackInfoModal: React.FC<TrackInfoModalProps> = ({
   });
   const [isPlaying, setIsPlaying] = useState(false);
   const [liked, setLiked] = useState(pinInfo?.isLiked);
-  const [comments, setComments] = useState<Comment[]>([]);
+  const [commentsByTrack, setCommentsByTrack] = useState<
+    Record<string, Comment[]>
+  >({});
   const [newComment, setNewComment] = useState('');
+  const currentComments = commentsByTrack[pinInfo?.isrc || ''] || [];
 
   const { trackDetail, isLoading } = useGetTrackInfo(pinInfo?.isrc ?? '');
   const { userName } = useGetUserName();
@@ -101,18 +100,23 @@ const TrackInfoModal: React.FC<TrackInfoModalProps> = ({
   const handleLike = () => {
     setLiked(!liked);
   };
-
+  // Handle adding a comment specific to the current track
   const handleAddComment = () => {
     if (newComment.trim() !== '') {
-      setComments((prevComments) => [
-        ...prevComments,
+      const updatedComments = [
+        ...currentComments,
         {
-          id: prevComments.length + 1,
+          id: currentComments.length + 1,
           text: newComment,
           author: userName,
           createdAt: new Date().toLocaleString(),
         },
-      ]);
+      ];
+
+      setCommentsByTrack((prevCommentsByTrack) => ({
+        ...prevCommentsByTrack,
+        [pinInfo?.isrc || '']: updatedComments,
+      }));
       setNewComment('');
     }
   };
@@ -173,7 +177,7 @@ const TrackInfoModal: React.FC<TrackInfoModalProps> = ({
             </Text>
           </Box>
           <VStack align="stretch" spacing="1.5vh" w="full" mt="1vh">
-            {comments.map((comment) => (
+            {currentComments.map((comment) => (
               <Box key={comment.id} p="1.5vh" bg="gray.100" borderRadius="md">
                 <Text fontWeight="bold" fontSize="1.5vh">
                   {comment.author}
