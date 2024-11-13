@@ -8,12 +8,14 @@ import {
   ModalCloseButton,
   Button,
   Box,
+  useDisclosure,
 } from '@chakra-ui/react';
 import { SearchBar } from './SearchBar';
 import { useEffect, useState } from 'react';
 import { SelectBar } from './SelectBar';
 import { usePinStore, refineMyPin, Pin } from '@/utils/store';
 import { usePostMelody } from '@/apis/api/post/usePostMelody';
+import { MusicCommentModal } from './MusicCommentModal';
 
 interface MusicSelectModalProps {
   isOpen: boolean;
@@ -44,13 +46,26 @@ export const MusicSelectModal: React.FC<MusicSelectModalProps> = ({
   const handleSaveMelody = (melodyInfo: MelodyInfo) => {
     postMelody({ melodyInfo });
   };
-  // useEffect(() => {
-  //   if (isSuccess) {
-  //     console.log('Melody successfully saved:', data);
-  //   } else if (error) {
-  //     console.error('Error saving melody:', error);
-  //   }
-  // }, [isSuccess, data, error]);
+  const {
+    isOpen: isCommentOpen,
+    onOpen: onCommentOpen,
+    onClose: onCommentClose,
+  } = useDisclosure();
+  const [comment, setComment] = useState('');
+  const handleCommentSubmit = (enteredComment: string) => {
+    setComment(enteredComment);
+    // Call your submit functions here after the comment is confirmed
+    submitMusic(
+      refineMyPin(isrcInfo, currentLocation.lat, currentLocation.lng)
+    );
+    handleSaveMelody({
+      latitude: currentLocation.lat,
+      longitude: currentLocation.lng,
+      isrc: isrcInfo,
+      content: enteredComment,
+    });
+    onClose(); // Close the main modal after submit
+  };
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
       <ModalOverlay />
@@ -88,25 +103,16 @@ export const MusicSelectModal: React.FC<MusicSelectModalProps> = ({
         </ModalBody>
 
         <ModalFooter>
-          <Button
-            colorScheme="blue"
-            mr={3}
-            onClick={() => {
-              submitMusic(
-                refineMyPin(isrcInfo, currentLocation.lat, currentLocation.lng)
-              );
-              handleSaveMelody({
-                latitude: currentLocation.lat,
-                longitude: currentLocation.lng,
-                isrc: isrcInfo,
-                content: '',
-              });
-              onClose(); // Close the modal after submitting
-            }}
-          >
+          <Button colorScheme="blue" mr={3} onClick={onCommentOpen}>
             Submit
           </Button>
         </ModalFooter>
+
+        <MusicCommentModal
+          isOpen={isCommentOpen}
+          onClose={onCommentClose}
+          onSubmitComment={handleCommentSubmit}
+        />
       </ModalContent>
     </Modal>
   );
