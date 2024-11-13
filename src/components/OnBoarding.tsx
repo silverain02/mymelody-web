@@ -28,7 +28,7 @@ export const OnBoarding = () => {
       <Box width="100%" p={4} pb={8}>
         <Button
           width="100%"
-          colorScheme="pink"
+          colorScheme="#FF003D"
           size="lg"
           onClick={() => {
             router.push('/login');
